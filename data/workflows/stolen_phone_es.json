@@ -1,0 +1,80 @@
+{
+  "workflow_id": "stolen_phone_es",
+  "locale": "es-ES",
+  "title": "Stolen mobile phone in Spain",
+  "description": "Verified actions for a person whose mobile phone has been stolen in Spain. Device-platform, carrier, banking, and coverage conditions must be checked before presenting a step.",
+  "steps": [
+    {
+      "id": "stolen_phone_es_01",
+      "title": "File a police report (denuncia)",
+      "description": "Report the theft to Policía Nacional. If possible, provide identification and a list of the stolen items with the phone's make, model, serial number, and IMEI. Policía Nacional also provides an online reporting route for eligible cases; check the online service's eligibility rules before using it.",
+      "priority": "high",
+      "condition": null,
+      "source_id": "policia_nacional_denuncia"
+    },
+    {
+      "id": "stolen_phone_es_02_movistar",
+      "title": "Suspend the Movistar SIM/line",
+      "description": "If the line is with Movistar, suspend the mobile line from the Mi Movistar customer area and follow Movistar's theft guidance. This is the carrier-line action; it is separate from remotely locking the handset.",
+      "priority": "high",
+      "condition": "The stolen SIM/line is provided by Movistar.",
+      "source_id": "movistar_bloqueo_linea_robo"
+    },
+    {
+      "id": "stolen_phone_es_03_vodafone",
+      "title": "Suspend the Vodafone SIM/line",
+      "description": "If the line is with Vodafone, use Vodafone's stated customer route to block the SIM and suspend the line, and request a replacement SIM when needed.",
+      "priority": "high",
+      "condition": "The stolen SIM/line is provided by Vodafone.",
+      "source_id": "vodafone_robo_perdida_dispositivo"
+    },
+    {
+      "id": "stolen_phone_es_04_orange",
+      "title": "Block the Orange SIM",
+      "description": "If the line is with Orange, block the SIM from Mi Orange under Products > Manage SIM, or use Orange customer support or a shop as described by Orange.",
+      "priority": "high",
+      "condition": "The stolen SIM/line is provided by Orange.",
+      "source_id": "orange_robo_perdida_movil"
+    },
+    {
+      "id": "stolen_phone_es_05_yoigo",
+      "title": "Temporarily block the Yoigo SIM",
+      "description": "If the line is with Yoigo, temporarily block the SIM from Mi Yoigo under the line settings and request a replacement SIM at a Yoigo shop when needed.",
+      "priority": "high",
+      "condition": "The stolen SIM/line is provided by Yoigo.",
+      "source_id": "yoigo_robo_perdida_movil"
+    },
+    {
+      "id": "stolen_phone_es_06_apple",
+      "title": "Mark an Apple device as lost and consider remote erase",
+      "description": "For an iPhone or iPad that was configured with Buscar, open iCloud.com/find or the Buscar app, select the device, and mark it as lost. If the device cannot be recovered, Apple documents remote erasure as an irreversible action. Do not remove the device from Buscar, because doing so removes Activation Lock.",
+      "priority": "high",
+      "condition": "The stolen device is an iPhone or iPad and Buscar was enabled before the theft.",
+      "source_id": "apple_robo_iphone_ipad"
+    },
+    {
+      "id": "stolen_phone_es_07_android",
+      "title": "Protect or erase an Android device remotely",
+      "description": "For an Android device, use Localizador on another device or at android.com/find to locate it, mark it as lost, or erase it. Google's documented prerequisites include a battery, a mobile-data or Wi-Fi connection, a signed-in Google Account, an enabled Localizador feature, and visibility on Google Play. After erasure, the device's location is no longer available in Localizador.",
+      "priority": "high",
+      "condition": "The stolen device is Android and the documented Localizador prerequisites are satisfied.",
+      "source_id": "google_android_perdido"
+    },
+    {
+      "id": "stolen_phone_es_08_bank",
+      "title": "Contact the bank about exposed banking or payment access",
+      "description": "If banking apps, payment cards, or other payment instruments were accessible on the stolen device, contact each bank immediately through its official app, website, or phone channel and ask what must be secured. For a lost or stolen card or suspected unauthorized use, Banco de España says to request a block, report the theft, and check account movements.",
+      "priority": "high",
+      "condition": "Banking apps or payment instruments were installed on or accessible from the stolen device.",
+      "source_id": "bde_uso_fraudulento_tarjeta"
+    },
+    {
+      "id": "stolen_phone_es_09_manufacturer",
+      "title": "Contact manufacturer support or theft-and-loss coverage if applicable",
+      "description": "For an Apple device covered by AppleCare+ with Theft and Loss, Apple documents submitting a replacement claim after the device cannot be recovered. Manufacturer reporting, account support, and insurance options are product- and coverage-specific; use the manufacturer's official support channel only when that support or coverage applies.",
+      "priority": "medium",
+      "condition": "The device has manufacturer support, a theft-and-loss plan, or another coverage issue that requires manufacturer action; the exact route depends on the device and plan.",
+      "source_id": "apple_robo_iphone_ipad"
+    }
+  ]
+}

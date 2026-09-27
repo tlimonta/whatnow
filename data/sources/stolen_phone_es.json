@@ -1,0 +1,77 @@
+{
+  "workflow_id": "stolen_phone_es",
+  "sources": [
+    {
+      "id": "policia_nacional_denuncia",
+      "name": "Policía Nacional — Denuncias",
+      "url": "https://www.policia.es/_es/denuncias/htdocs/politicaCookies.php",
+      "description": "Official Policía Nacional guidance on reporting a crime in person or online and bringing identification plus a list of stolen items with their make, model, serial number, or IMEI where available.",
+      "type": "official_government",
+      "last_verified": "2026-09-27"
+    },
+    {
+      "id": "policia_nacional_ovd",
+      "name": "Policía Nacional — Oficina Virtual de Denuncias",
+      "url": "https://denuncias.policia.es/OVD/Principal.dgp",
+      "description": "Official Policía Nacional online complaint service describing which theft and loss situations can be started through the Oficina Virtual de Denuncias and which situations are excluded.",
+      "type": "official_government",
+      "last_verified": "2026-09-27"
+    },
+    {
+      "id": "movistar_bloqueo_linea_robo",
+      "name": "Movistar — Bloquear línea móvil por robo",
+      "url": "https://www.movistar.es/atencion-cliente/bloqueo-linea-robo",
+      "description": "Official Movistar guidance to suspend a mobile line after theft or loss through the customer area and to report the theft to the police.",
+      "type": "carrier",
+      "last_verified": "2026-09-27"
+    },
+    {
+      "id": "vodafone_robo_perdida_dispositivo",
+      "name": "Vodafone — Qué hacer si pierdes o te roban tu dispositivo",
+      "url": "https://ayudacliente.vodafone.es/particulares/servicio-tecnico/robo-y-perdida/que-hacer-si-pierdes-o-te-roban-tu-dispositivo/",
+      "description": "Official Vodafone guidance for suspending a line and blocking a SIM after loss or theft, including the route through a Vodafone shop and requesting a replacement SIM.",
+      "type": "carrier",
+      "last_verified": "2026-09-27"
+    },
+    {
+      "id": "orange_robo_perdida_movil",
+      "name": "Orange — Qué hacer si te roban el móvil o lo pierdes",
+      "url": "https://ayuda.orange.es/particulares/movil/robo-perdida-rotura/me-han-robado-el-movil/1153-que-hacer-si-te-roban-el-movil-o-lo-pierdes",
+      "description": "Official Orange guidance to block a SIM through Mi Orange, customer support, or a shop after a mobile is lost or stolen.",
+      "type": "carrier",
+      "last_verified": "2026-09-27"
+    },
+    {
+      "id": "yoigo_robo_perdida_movil",
+      "name": "Yoigo — Me han robado el móvil o lo he perdido",
+      "url": "https://www.yoigo.com/ayuda/me-han-robado-el-movil-o-lo-he-perdido?helpSearch=numero",
+      "description": "Official Yoigo guidance to block a SIM temporarily through Mi Yoigo and obtain a replacement SIM after loss or theft.",
+      "type": "carrier",
+      "last_verified": "2026-09-27"
+    },
+    {
+      "id": "apple_robo_iphone_ipad",
+      "name": "Apple Support — Si te roban el iPhone o el iPad",
+      "url": "https://support.apple.com/es-es/120837",
+      "description": "Official Apple guidance to mark an iPhone or iPad as lost, erase it remotely when necessary, contact the mobile operator and authorities, review the Apple Account, and submit an AppleCare+ theft-and-loss claim when covered.",
+      "type": "manufacturer",
+      "last_verified": "2026-09-27"
+    },
+    {
+      "id": "google_android_perdido",
+      "name": "Ayuda de Android — Cómo borrar, encontrar o proteger un dispositivo Android perdido",
+      "url": "https://support.google.com/android/answer/6160491?hl=es",
+      "description": "Official Google/Android guidance to locate, mark as lost, or erase an Android device remotely, including account, connectivity, battery, and Localizador requirements and the IMEI reference.",
+      "type": "manufacturer",
+      "last_verified": "2026-09-27"
+    },
+    {
+      "id": "bde_uso_fraudulento_tarjeta",
+      "name": "Banco de España — Uso fraudulento",
+      "url": "https://clientebancario.bde.es/pcb/es/menu-horizontal/productosservici/serviciospago/tarjetas/guia-textual/uso-fraudulento/",
+      "description": "Official Banco de España guidance to notify the bank immediately after loss or theft of a payment card, request a block, report the incident, and check for fraudulent transactions.",
+      "type": "financial",
+      "last_verified": "2026-09-27"
+    }
+  ]
+}
