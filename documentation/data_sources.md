@@ -1,3 +1,17 @@
 # Data Sources
 
-This document will list the verified sources used for official procedures, contact details, deadlines, and safety information. It will also describe how sources are reviewed and kept current.
+Sources used by the verified stolen-phone workflow for Spain. All URLs were checked on 2026-09-27. The machine-readable source records are in [`data/sources/stolen_phone_es.json`](../data/sources/stolen_phone_es.json).
+
+| Source | URL | Description |
+|---|---|---|
+| Policía Nacional — Denuncias | <https://www.policia.es/_es/denuncias/htdocs/politicaCookies.php> | Reporting a crime in person or online and providing identification and phone identifiers such as IMEI when available. |
+| Policía Nacional — Oficina Virtual de Denuncias | <https://denuncias.policia.es/OVD/Principal.dgp> | Online complaint categories and exclusions for theft and loss reports. |
+| Movistar — Bloquear línea móvil por robo | <https://www.movistar.es/atencion-cliente/bloqueo-linea-robo> | Suspending a Movistar mobile line after theft or loss. |
+| Vodafone — Qué hacer si pierdes o te roban tu dispositivo | <https://ayudacliente.vodafone.es/autonomos/servicio-tecnico/robo-y-perdida/que-hacer-si-pierdes-o-te-roban-tu-dispositivo/> | Blocking a Vodafone SIM and suspending the line after loss or theft. |
+| Orange — Qué hacer si te roban el móvil o lo pierdes | <https://ayuda.orange.es/particulares/movil/robo-perdida-rotura/me-han-robado-el-movil/1153-que-hacer-si-te-roban-el-movil-o-lo-pierdes> | Blocking an Orange SIM through Mi Orange, support, or a shop. |
+| Yoigo — Me han robado el móvil o lo he perdido | <https://www.yoigo.com/ayuda/me-han-robado-el-movil-o-lo-he-perdido?helpSearch=numero> | Temporarily blocking a Yoigo SIM and obtaining a replacement SIM. |
+| Apple Support — Si te roban el iPhone o el iPad | <https://support.apple.com/es-es/120837> | Marking an Apple device as lost, remotely erasing it, protecting the Apple Account, and checking AppleCare+ theft-and-loss coverage. |
+| Android Help — Cómo borrar, encontrar o proteger un dispositivo Android perdido | <https://support.google.com/android/answer/6160491?hl=es> | Locating, marking as lost, or erasing an Android device remotely and documenting prerequisites. |
+| Banco de España — Uso fraudulento | <https://clientebancario.bde.es/pcb/es/menu-horizontal/productosservici/serviciospago/tarjetas/guia-textual/uso-fraudulento/> | Promptly notifying a bank, blocking a lost or stolen payment card, reporting the theft, and checking movements. |
+
+These sources are procedural references, not a substitute for emergency services, police instructions, carrier terms, bank security decisions, or manufacturer coverage terms. Review URLs and changed procedures before each release.
