@@ -146,3 +146,82 @@ I confirmed that new cases remain in the intake state and that the backend
 does not perform AI classification or invent case facts.
 
 I also reviewed the Git diff before committing the work.
+
+## Session: 2026-09-29
+
+Project: WhatNow, DAT32-91 Prompt Engineering and Git.
+Branch inspected: `feature/workflow-engine`.
+Assistant: OpenAI Codex. Human owner: Tommaso Limonta.
+
+### Request and inspection
+
+Tommaso asked Codex to implement the deterministic workflow engine for the
+stolen-phone Spain MVP without changing branches, committing, pushing, merging,
+or modifying Gregorio's verified data. Before editing, Codex inspected the
+backend models, API, service, storage, backend tests, both verified JSON files,
+the API contract, architecture/decision documents, research notes, threat model,
+prompt strategy, evaluation schema, and the existing AI log. The working tree
+was clean and the requested branch was already active.
+
+The real workflow contains nine steps. Conditions are nullable prose strings,
+not machine-readable expressions. The source catalog contains nine records. The
+repository's agreed intake schema has seven facts, but it has no carrier,
+Buscar/Localizador prerequisite, or coverage fields. Codex therefore did not
+invent those values or rewrite the data: unsupported conditions remain unknown.
+Only the unconditional police step and the banking condition can currently be
+resolved from the agreed facts.
+
+### AI-assisted implementation
+
+Codex drafted `src/backend/workflow_engine.py`, extended `Task` with optional
+workflow-backed description, priority, workflow ID, and source ID fields, and
+added focused backend tests. The engine strictly validates the real workflow
+and source structures, source references, workflow ID alignment, and supported
+condition text. It uses tri-state evaluation, deterministic step IDs for task
+identity, and idempotent task upserts that preserve existing status.
+
+Codex also drafted `documentation/workflow_engine.md` and this session record.
+No AI parser, LLM call, frontend integration, database, external API, web
+scraping, or dependency was added. The verified workflow and source JSON files
+were not modified.
+
+### Automated evaluation performed by Codex
+
+Command run from the repository root with the existing ignored virtual
+environment:
+
+```powershell
+src/backend/.venv/Scripts/python.exe -m pytest tests/backend -q -p no:cacheprovider
+```
+
+The first full backend run after implementation completed with **72 passed in
+0.48 seconds** and one existing Starlette TestClient deprecation warning about
+HTTPX. After adding two malformed-data checks and a legacy serialization check,
+the final backend run completed with **75 passed in 0.32 seconds** and the same
+warning. `pip check` reported no broken requirements, and `git diff --check`
+found no whitespace errors. Codex also reviewed the final diff and status; exact
+changed files and status are reported in the assistant's final response for this
+session.
+
+### Human review status
+
+**Human review of this workflow-engine change is pending.** This entry does not
+claim that Tommaso reviewed the code, validated Gregorio's source content, or ran
+the tests himself. Codex did not create or switch a branch and did not commit,
+push, or merge. Tommaso should inspect the condition-to-fact interpretation,
+provenance fields, status-aware reconciliation policy, diff, and test output before
+committing.
+
+### Targeted reconciliation refinement
+
+After review feedback, Codex changed only workflow task reconciliation and its
+tests/documentation. Pending tasks produced by `stolen_phone_es` are now removed
+when they are no longer definitively applicable or the case type changes.
+Completed and skipped tasks remain as history, while unrelated tasks and tasks
+from other workflows are left untouched. Duplicate and ID-collision checks are
+unchanged. The first refinement run completed with **82 passed in 0.32 seconds**;
+after adding explicit historical-state coverage for null and unsupported case
+types, the final run completed with **86 passed in 0.34 seconds**. Both runs had
+the existing Starlette TestClient deprecation warning, and the final
+`git diff --check` completed without errors. No human verification of this
+refinement is claimed here.
