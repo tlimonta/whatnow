@@ -121,3 +121,28 @@ only after completion: "Codex assisted with implementation; I manually reviewed
 the code and ran the tests."
 
 No branch was created/switched, and no commit or push was performed by Codex.
+
+## Human verification
+
+I manually reviewed the backend structure and the changes created with Codex.
+
+I ran the complete automated test suite locally:
+
+- 52 tests passed
+- 1 dependency deprecation warning remained
+
+I also ran the FastAPI application locally and manually tested the API
+through Swagger.
+
+Verified endpoints included:
+
+- GET /health
+- POST /api/cases
+- GET /api/cases/{case_id}
+- handling of unknown case IDs
+- task update error handling where applicable
+
+I confirmed that new cases remain in the intake state and that the backend
+does not perform AI classification or invent case facts.
+
+I also reviewed the Git diff before committing the work.
