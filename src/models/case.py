@@ -1,4 +1,4 @@
-"""Case state only: procedures and classification belong to later integrations."""
+"""Shared case and task state for backend integrations."""
 
 from datetime import datetime, timezone
 from enum import Enum
@@ -49,6 +49,18 @@ class Task(BaseModel):
     id: NonBlankString = Field(default_factory=lambda: str(uuid4()))
     title: NonBlankString
     status: TaskStatus = TaskStatus.PENDING
+    description: NonBlankString | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
+    priority: NonBlankString | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
+    workflow_id: NonBlankString | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
+    source_id: NonBlankString | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
 
 
 class Case(BaseModel):
