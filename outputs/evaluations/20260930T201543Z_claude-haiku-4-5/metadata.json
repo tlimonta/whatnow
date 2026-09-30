@@ -1,0 +1,26 @@
+{
+  "mock": false,
+  "date_utc": "2026-09-30T20:15:43+00:00",
+  "provider": "anthropic",
+  "model": "claude-haiku-4-5",
+  "sampling": "provider default (anthropic SDK 1.x accepts no temperature)",
+  "max_tokens": 2048,
+  "anthropic_sdk": "1.9.0",
+  "prompt_versions": [
+    "v1",
+    "v2",
+    "v3"
+  ],
+  "delimiter_neutralization": true,
+  "dataset": {
+    "file": "evaluations/intake_cases.json",
+    "version": "v1",
+    "cases_run": 2,
+    "cases_total": 40
+  },
+  "git_commit": "a5e807e",
+  "git_dirty_files": [
+    "(not recorded)"
+  ],
+  "rescored_utc": "2026-09-30T20:17:58+00:00"
+}

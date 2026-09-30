@@ -1,0 +1,27 @@
+{
+  "mock": false,
+  "date_utc": "2026-09-30T20:21:22+00:00",
+  "provider": "anthropic",
+  "model": "claude-haiku-4-5",
+  "sampling": "provider default (anthropic SDK 1.x accepts no temperature)",
+  "max_tokens": 2048,
+  "anthropic_sdk": "1.9.0",
+  "prompt_versions": [
+    "v1",
+    "v2",
+    "v3"
+  ],
+  "delimiter_neutralization": true,
+  "dataset": {
+    "file": "evaluations/intake_cases.json",
+    "version": "v1",
+    "cases_run": 40,
+    "cases_total": 40
+  },
+  "git_commit": "2bd15bc",
+  "git_dirty_files": [
+    "documentation/ai_logs/edoardo.md"
+  ],
+  "metadata_note": "git_dirty_files corrected by hand after the run: a benchmark bug (str.strip on git status output) had cut the first letter ('ocumentation/...'). Fixed in run_benchmark.py; no other field changed.",
+  "rescored_utc": "2026-09-30T20:27:41+00:00"
+}
