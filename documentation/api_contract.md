@@ -1,6 +1,7 @@
 # WhatNow core API contract
 
-Owner: Tommaso Limonta. Scope: initial backend, without AI or workflow integration.
+Owner: Tommaso Limonta. Scope: backend API with single-message AI intake and the
+verified stolen-phone Spain workflow.
 
 ## Run and test
 
@@ -9,7 +10,7 @@ From the repository root, using the tested Python 3.14.7 environment:
 ```powershell
 python -m venv src/backend/.venv
 src/backend/.venv/Scripts/python.exe -m pip install -r requirements.txt
-src/backend/.venv/Scripts/python.exe -m pytest tests/backend -q -p no:cacheprovider
+src/backend/.venv/Scripts/python.exe -m pytest -q -p no:cacheprovider
 src/backend/.venv/Scripts/python.exe -m uvicorn src.backend.main:app --host 127.0.0.1 --port 8000
 ```
 
@@ -20,6 +21,9 @@ schema at `/openapi.json`. Use a single server process: restarting (including
 development reloads) loses all cases, and separate workers have separate stores.
 Dependencies are pinned at the direct-dependency level; the tested transitive
 versions are recorded in the AI log. Other Python versions have not been tested.
+On this deeply nested Windows checkout, run the SDK tests from a short mapped
+drive as described in `documentation/intake_workflow_integration.md`; otherwise
+Python may skip the provider-client test module because of path length.
 
 ## State and validation
 
@@ -30,11 +34,15 @@ versions are recorded in the AI log. Other Python versions have not been tested.
 - Case `status`: `intake`, `active`, `resolved`.
 - `risk_level`: `low`, `medium`, `high`, `critical`, or `null` when not assessed.
 - Task fields: `id`, `title`, `status`. Task `status`: `pending`, `completed`,
-  `skipped`. IDs and titles must contain non-whitespace text.
-- `facts` is a JSON object. Unknown values stay `null`; absent keys mean that
-  fact has not been collected. No country or other fact is inferred here.
-- `missing_fields` is a list of field names. Its initial empty value means
-  missing information has not been assessed, not that intake is complete.
+  `skipped`. Workflow tasks also include `description`, `priority`,
+  `workflow_id`, and `source_id`; these optional fields are absent on legacy
+  tasks. IDs and titles must contain non-whitespace text.
+- `facts` is a JSON object. Successful AI intake populates the seven agreed
+  fields: `location`, `incident_time`, `device_type`, `theft_confirmed`,
+  `banking_apps_present`, `device_locked`, and `sim_blocked`. Unknown values
+  stay `null`. No country is inferred from location text.
+- `missing_fields` contains the null fact names for phone cases. The parser
+  returns `[]` for `unsupported` cases.
 - Generated IDs are UUID4 strings. Lookup paths accept opaque string IDs,
   including future workflow task identifiers; unknown IDs return 404.
 - `created_at` is an ISO 8601 timestamp with a timezone, generated in UTC.
@@ -42,9 +50,10 @@ versions are recorded in the AI log. Other Python versions have not been tested.
 - Messages must be strings containing at least one non-whitespace character.
   Accepted text is preserved, including surrounding whitespace.
 
-Intake uses `case_type: null` rather than `unsupported`: the application has
-not yet determined whether the user's situation is supported. `unsupported`
-is reserved for a later explicit classification. Risk also remains unknown.
+`case_type: null` remains valid for a case created outside the integrated POST
+path or not yet assessed. Successful POST intake returns one of the four case
+types. `risk_level` remains null: no verified risk rule exists. Case `status`
+remains `intake`: no agreed lifecycle transition rule exists.
 
 ## GET /health
 
@@ -61,7 +70,7 @@ This checks that the application responds; it is not a database or AI health che
 Request:
 
 ```json
-{"message": "I cannot find my phone in Madrid."}
+{"message": "My phone was stolen in Madrid."}
 ```
 
 Response: **201 Created** (illustrative generated ID and timestamp):
@@ -69,20 +78,45 @@ Response: **201 Created** (illustrative generated ID and timestamp):
 ```json
 {
   "id": "f8eed2cf-23c6-46af-a7ee-bc30564c162a",
-  "case_type": null,
+  "case_type": "stolen_phone",
   "status": "intake",
   "risk_level": null,
-  "initial_message": "I cannot find my phone in Madrid.",
-  "facts": {},
-  "missing_fields": [],
-  "tasks": [],
+  "initial_message": "My phone was stolen in Madrid.",
+  "facts": {
+    "location": "Madrid",
+    "incident_time": null,
+    "device_type": null,
+    "theft_confirmed": true,
+    "banking_apps_present": null,
+    "device_locked": null,
+    "sim_blocked": null
+  },
+  "missing_fields": ["incident_time", "device_type", "banking_apps_present", "device_locked", "sim_blocked"],
+  "tasks": [{
+    "id": "stolen_phone_es_01",
+    "title": "File a police report (denuncia)",
+    "status": "pending",
+    "description": "Report the theft to Policía Nacional. If possible, provide identification and a list of the stolen items with the phone's make, model, serial number, and IMEI. Policía Nacional also provides an online reporting route for eligible cases; check the online service's eligibility rules before using it.",
+    "priority": "high",
+    "workflow_id": "stolen_phone_es",
+    "source_id": "policia_nacional_denuncia"
+  }],
   "created_at": "2026-09-23T12:00:00Z"
 }
 ```
 
 Every successful request creates a separate case, even for identical messages.
-There is no classification, fact extraction, risk assessment, or workflow
-generation in this branch. Clients cannot submit tasks or classified fields.
+The existing parser classifies the message and extracts
+facts; only the deterministic workflow supplies tasks. `stolen_phone` may receive
+verified tasks. `lost_phone`, `uncertain_phone_loss`, and `unsupported` receive
+no stolen-phone tasks. Clients cannot submit tasks or classified fields.
+
+The parser and provider are created only for a valid POST body. Missing provider
+configuration returns **503** `{"detail": "AI intake is not configured"}`.
+Provider failure or invalid model output returns **502** with a generic detail.
+Workflow loading/evaluation failure returns **503**
+`{"detail": "Verified workflow unavailable"}`. These failures do not save a
+case. Responses do not include raw model output, credentials, or stack traces.
 
 ## GET /api/cases/{case_id}
 
@@ -116,11 +150,9 @@ does not automatically change case status or resolve a case.
 Unknown case: **404**, `{"detail": "Case not found"}`.
 Existing case without that task: **404**, `{"detail": "Task not found"}`.
 
-New cases currently have no tasks, so PATCH against a newly created case returns
-the task 404. Successful updates are exercised with test-only seeded tasks;
-there is no public task-creation endpoint. Task titles and later source metadata
-must come from verified workflow data when that integration is implemented.
-The minimal task model does not yet define the workflow/source schema.
+A stolen-phone case can now have verified workflow tasks immediately after POST.
+Other case types have no tasks under the current verified data. There is no
+public task-creation endpoint.
 
 ## Invalid requests
 
@@ -142,17 +174,19 @@ returns 422 even if the case ID is unknown.
 
 ## Architecture and integration boundary
 
-`main.py` validates HTTP input using `schemas.py`, calls `CaseService`, and maps
-domain not-found errors to HTTP 404. `CaseService` creates intake cases or updates
-task state, while `InMemoryCaseStore` saves and returns deep copies of `Case`.
+`main.py` validates HTTP input using `schemas.py`, then creates the existing
+`IntakeParser` for POST and passes its validated result to `CaseService`.
+`CaseService` maps case fields, applies `WorkflowEngine` for stolen-phone cases,
+and saves only the final case. `InMemoryCaseStore` saves and returns deep copies.
 FastAPI serializes the returned model into JSON. One service and one store belong
 to each application instance; a service lock protects concurrent task updates.
 
 Shared models live in `src/models/case.py`. Tests can create an isolated app with
-`create_app()` and override `get_case_service` with a service backed by test data.
-Future AI code may propose classifications and facts; authoritative procedures,
-URLs, contacts, and recovery actions must come from verified deterministic data.
-This branch has no AI calls, official advice, authentication, or durable storage.
+`create_app(intake_parser_factory=...)` and override `get_case_service` with a
+service backed by test data. Confidence, evidence, warnings, provider model,
+prompt version, and raw model output remain parser-only. Authoritative
+procedures, URLs, contacts, and recovery actions come from verified workflow
+data. There is no authentication or durable storage.
 
 Implementation references: [FastAPI testing](https://fastapi.tiangolo.com/tutorial/testing/)
 and [Pydantic fields](https://pydantic.dev/docs/validation/latest/concepts/fields/).
