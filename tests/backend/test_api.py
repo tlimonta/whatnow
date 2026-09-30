@@ -4,6 +4,7 @@ from uuid import UUID
 import pytest
 from fastapi.testclient import TestClient
 
+from src.ai.parser import IntakeParser
 from src.backend.main import create_app
 from src.backend.storage import InMemoryCaseStore
 from src.models.case import Case, Task
@@ -16,7 +17,7 @@ def test_health(client: TestClient) -> None:
 
 
 def test_create_and_retrieve_case(client: TestClient) -> None:
-    message = "  My phone was stolen in Madrid.  "
+    message = "  A tax question.  "
     response = client.post("/api/cases", json={"message": message})
     assert response.status_code == 201
     case = response.json()
@@ -24,11 +25,19 @@ def test_create_and_retrieve_case(client: TestClient) -> None:
     assert datetime.fromisoformat(case["created_at"]).utcoffset().total_seconds() == 0
     assert case == {
         "id": case["id"],
-        "case_type": None,
+        "case_type": "unsupported",
         "status": "intake",
         "risk_level": None,
         "initial_message": message,
-        "facts": {},
+        "facts": {
+            "location": None,
+            "incident_time": None,
+            "device_type": None,
+            "theft_confirmed": None,
+            "banking_apps_present": None,
+            "device_locked": None,
+            "sim_blocked": None,
+        },
         "missing_fields": [],
         "tasks": [],
         "created_at": case["created_at"],
@@ -38,12 +47,11 @@ def test_create_and_retrieve_case(client: TestClient) -> None:
     assert fetched.json() == case
 
 
-@pytest.mark.parametrize("message", ["I lost my phone", "Stolen phone", "A tax question"])
-def test_no_classification_or_workflow_is_inferred(client: TestClient, message: str) -> None:
-    case = client.post("/api/cases", json={"message": message}).json()
-    assert case["case_type"] is None
+def test_fake_unsupported_intake_has_no_workflow_tasks(client: TestClient) -> None:
+    case = client.post("/api/cases", json={"message": "A tax question"}).json()
+    assert case["case_type"] == "unsupported"
     assert case["risk_level"] is None
-    assert case["facts"] == {}
+    assert all(value is None for value in case["facts"].values())
     assert case["tasks"] == []
 
 
@@ -56,10 +64,11 @@ def test_no_classification_or_workflow_is_inferred(client: TestClient, message: 
     {"message": []},
     {"message": "Hello", "case_type": "stolen_phone"},
 ])
-def test_invalid_creation_body(client: TestClient, body: dict) -> None:
+def test_invalid_creation_body(client: TestClient, fake_client, body: dict) -> None:
     response = client.post("/api/cases", json=body)
     assert response.status_code == 422
     assert isinstance(response.json()["detail"], list)
+    assert fake_client.prompts == []
 
 
 def test_unknown_case(client: TestClient) -> None:
@@ -114,8 +123,9 @@ def test_invalid_task_update_does_not_mutate_case(
     assert store.get(case.id) == case
 
 
-def test_app_instances_have_separate_storage() -> None:
-    with TestClient(create_app()) as first, TestClient(create_app()) as second:
+def test_app_instances_have_separate_storage(fake_client) -> None:
+    parser_factory = lambda: IntakeParser(fake_client)
+    with TestClient(create_app(parser_factory)) as first, TestClient(create_app(parser_factory)) as second:
         case = first.post("/api/cases", json={"message": "Lost phone"}).json()
         assert first.get(f"/api/cases/{case['id']}").status_code == 200
         assert second.get(f"/api/cases/{case['id']}").status_code == 404
