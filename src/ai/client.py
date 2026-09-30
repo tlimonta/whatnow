@@ -6,6 +6,8 @@ from typing import Protocol
 from src.ai.errors import LLMConfigurationError, LLMProviderError
 
 API_KEY_ENV = "ANTHROPIC_API_KEY"
+WORKSPACE_ID_ENV = "ANTHROPIC_WORKSPACE_ID"
+WORKSPACE_ID_HEADER = "anthropic-workspace-id"
 MODEL_ENV = "WHATNOW_LLM_MODEL"
 # Cheapest current Claude model; enough for single-message classification/extraction.
 # If the Phase 3 benchmark shows it is too weak, try claude-sonnet-5-5 via WHATNOW_LLM_MODEL.
@@ -33,7 +35,17 @@ class AnthropicClient:
 
         self._anthropic = anthropic
         self.model = model or os.environ.get(MODEL_ENV) or DEFAULT_MODEL
-        self._client = anthropic.Anthropic(timeout=timeout_seconds, max_retries=2)
+        client_options: dict[str, object] = {
+            "timeout": timeout_seconds,
+            "max_retries": 2,
+        }
+        workspace_id = os.environ.get(WORKSPACE_ID_ENV)
+        if workspace_id:
+            client_options["default_headers"] = {
+                WORKSPACE_ID_HEADER: workspace_id,
+            }
+
+        self._client = anthropic.Anthropic(**client_options)
 
     def complete(self, prompt: str) -> str:
         anthropic = self._anthropic
