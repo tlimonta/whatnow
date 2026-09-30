@@ -2,6 +2,8 @@
 fastapi==0.141.1
 pydantic==2.13.5
 uvicorn==0.53.0
+# Claude API client for the AI intake parser (src/ai); unit tests do not call it.
+anthropic==1.9.0
 
 # Test dependencies; HTTPX is required by FastAPI's TestClient.
 pytest==9.1.1

@@ -203,3 +203,56 @@ Edoardo asked the AI to act on pre-review items 2-11 instead of doing them himse
 **Not done by the AI (still yours)**
 - Item 10: asking Tommaso and Marta the questions in sections 6 and 7. The AI cannot hold these discussions.
 - Confirming or overriding the decisions above, then ticking the checklist.
+
+---
+
+## Phase E2: Structured AI intake parser (issue AI-02)
+
+### Date
+2026-09-30
+
+### Tool / model / mode
+Claude Code (VS Code extension), model Claude Opus 5.5, on branch `feature/ai-intake-parser`. The AI updated `main` (fast-forward), created the branch, and created/edited files. It did not stage, commit or push.
+
+### Dependency check
+PR #2 (Tommaso, core case engine) and PR #7 (my prompts/evaluation set) were both merged into `main` before starting.
+
+### What the AI generated
+- `src/ai/errors.py`: `IntakeError` base with `LLMConfigurationError`, `LLMProviderError`, `IntakeOutputError`.
+- `src/ai/schema.py`: Pydantic models for the V3 output (reuses `CaseType` and `NonBlankString` from `src/models/case.py`). Extra keys are rejected, so a model that adds tasks or procedures fails validation.
+- `src/ai/prompts.py`: loads the ```text block from `prompts/vN_*.md` (the prompt files stay the single source), inserts the user message with `str.replace`, and neutralizes literal `<user_message>` / `</user_message>` tags in user text (V3 integration note).
+- `src/ai/client.py`: a one-method `LLMClient` protocol and `AnthropicClient`. The key is read only from `ANTHROPIC_API_KEY`; the model from `WHATNOW_LLM_MODEL` (default `claude-haiku-4-5`, no thinking, `max_tokens` 2048). SDK errors are mapped to clear intake errors without the key in the message.
+- `src/ai/parser.py`: `IntakeParser.parse()` renders the prompt, validates the JSON, then applies deterministic rules: evidence must be an exact substring of the text sent; a non-null fact without valid evidence becomes `null`; `unsupported` clears facts/evidence; `missing_fields` is recomputed. Every change is recorded in `warnings`; the raw output is kept for benchmarking.
+- `tests/ai/`: 43 unit tests with fake clients (no real API calls).
+- `.env.example` (variable names only), `requirements.txt` (`anthropic==1.9.0`).
+
+### Decisions proposed by the AI (need human confirmation)
+- **Provider:** Anthropic, because no provider was chosen in the repository. Swapping provider means writing one class with a `complete(prompt) -> str` method.
+- **Model:** first drafted with `claude-opus-5-5`; changed at my request to `claude-haiku-4-5`, the cheapest current Claude model ($1 / $5 per million input/output tokens vs $4 / $20), because the task is single-message classification and extraction. Haiku 4.5 rejects the `effort` parameter, so it and the server-side refusal fallback were removed. Whether Haiku is accurate enough is unmeasured; Phase 3 should compare it with `claude-sonnet-5-5` on the same dataset.
+- **Enforce, don't just trust:** ungrounded facts are set to `null` by code, not only by the prompt. This makes the parser safer but means the Phase 3 benchmark must score the raw model output and the post-parser output separately (already required by `prompt_strategy.md` §4).
+- **Delimiter neutralization is always on.** IC-028 was designed to test the prompt *without* this defence; in Phase 3 the raw-prompt result for IC-028 must be measured with that in mind.
+- **Extra output keys are an error**, not silently dropped.
+- **No backend changes.** Wiring the parser into `CaseService.create_case` is left to the integration phase (Tommaso).
+
+### Checks run
+- `pytest tests -q`: 95 passed (52 existing backend + 43 new), on Python **3.13.7** in `src/backend/.venv` (the team documents 3.14.7; not tested on 3.14 here).
+- Smoke check with a fake client: all 40 inputs of `evaluations/intake_cases.json` render and parse with V1, V2 and V3 templates.
+- One test was wrong in the first run (it assumed `<user_message>` appears once in the V3 prompt, but the rules text also mentions it); the test was fixed, not the code.
+- After the model change to Haiku: 95 passed again.
+- Running bare `pytest` from the Anaconda base environment fails with `ModuleNotFoundError: No module named 'src'` (backend tests included). Use `src/backend/.venv/bin/python -m pytest tests -q -p no:cacheprovider` from the repository root.
+
+### Results
+No real model was called. No benchmark numbers exist.
+
+### Human review: TO BE COMPLETED BY EDOARDO
+- [x] Read `src/ai/parser.py` and can explain every rule in `_enforce_rules`
+- [x] Can explain every schema field in `src/ai/schema.py`
+- [x] Agreed the provider choice with the team
+- [x] Ran `pytest tests -q` myself
+- [x] Checked `.env.example` contains no value and `.env` is not tracked
+- [x] Reviewed `git diff` before committing
+
+**Changes made by human:**
+Asked to switch the default model from claude-opus-5-5 to claude-haiku-4-5 to reduce cost.
+
+**Notes:**
