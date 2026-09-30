@@ -88,10 +88,10 @@ engine = WorkflowEngine.from_files()
 updated_case = engine.apply_to_case(case)
 ```
 
-The current API does not call this method automatically because new cases still
-have `case_type: null` and no AI parser is integrated. The later intake
-integration should populate structured facts first, then call the engine and
-persist the returned case through the existing service/store boundary.
+The POST intake path now calls this method through `CaseService` after the parser
+returns validated structured facts for a stolen-phone case. The service saves
+the resulting case only after workflow evaluation succeeds. Other case types
+do not invoke the stolen-phone workflow.
 
 ## Current limitations
 

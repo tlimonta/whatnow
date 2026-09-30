@@ -225,3 +225,98 @@ types, the final run completed with **86 passed in 0.34 seconds**. Both runs had
 the existing Starlette TestClient deprecation warning, and the final
 `git diff --check` completed without errors. No human verification of this
 refinement is claimed here.
+
+## Session: 2026-09-30 — intake and workflow integration
+
+Project: WhatNow, DAT32-91 Prompt Engineering and Git. Branch inspected:
+`feature/intake-workflow-integration`. Assistant: OpenAI Codex. Human owner:
+Tommaso Limonta.
+
+Tommaso asked Codex to connect the existing single-message AI parser to the Case
+service and verified stolen-phone workflow. Codex inspected the checked-out
+branch and clean working tree, then read the backend, parser, workflow and source
+contracts, tests, and relevant documentation before editing. The parser already
+returned a validated `ParsedIntake`; the workflow engine already accepted a
+structured `Case`. The Phase 1 API tests and documentation expected neutral
+POST results, so Codex updated those expectations for the new integrated path.
+
+Codex changed POST case creation to construct the provider only after request
+validation, parse the message, pass only the structured result to `CaseService`,
+apply `WorkflowEngine` for stolen-phone cases, and save only after success. It
+added fixed API error responses for missing configuration, provider failure,
+invalid model output, and workflow failure. Tests inject fake clients and check
+case mapping, verified task provenance, null/false banking conditions, other
+case types, retrieval, task updates, idempotence, and failure paths. Codex
+updated the API contract, workflow usage note, and a concise integration guide.
+No parser design, verified workflow/source data, prompt, evaluation fixture,
+frontend, dependency, or shared Case model was changed.
+
+The full repository test command run by Codex was:
+
+```powershell
+src/backend/.venv/Scripts/python.exe -m pytest -q -p no:cacheprovider
+```
+
+The first run reported **131 passed, 1 skipped, 1 warning in 0.84 seconds**.
+The skip occurred because the pinned `anthropic` SDK was not installed in the
+existing ignored virtual environment. A direct `pip install -r requirements.txt`
+failed on a Windows path-length error in this deeply nested checkout. Codex
+temporarily mapped the same repository to `W:` and installed the existing pinned
+requirements through that shorter path. The full suite then ran with **142 passed
+in 2.13 seconds**. A subsequent run from the original long path skipped the
+Anthropic test module because Python could not import one deeply nested SDK
+module by its full path. Codex added a safe configuration response for that
+import failure and a focused test. The final full run through `W:` reported
+**143 passed in 1.95 seconds**, with no skips or warnings. `pip check` reported
+no broken requirements. No tracked dependency file changed.
+
+No live provider call, prompt benchmark, manual Swagger check, or human review
+was performed by Codex during that implementation session. The temporary `W:`
+mapping was removed after testing. No branch operation, commit, push, merge, or
+Git-history change was performed.
+
+### Optional Anthropic workspace configuration follow-up
+
+The initial manual live POST returned HTTP 502. Its underlying Anthropic error
+required the `anthropic-workspace-id` header for the API key being used, and a
+direct provider test confirmed the requirement. Optional
+`ANTHROPIC_WORKSPACE_ID` support was then added; the live POST succeeded after
+that fix. No API key, workspace ID, or other secret is recorded here.
+
+### Completed Phase 3 verification
+
+Automated verification completed with **145 passing tests**. The Anthropic SDK
+required a temporary short Windows path because of a path-length issue. Pip and
+environment validation completed, and `git diff --check` passed with only normal
+LF/CRLF notices.
+
+Tommaso completed live-provider verification using `ANTHROPIC_API_KEY` and the
+optional `ANTHROPIC_WORKSPACE_ID`. `GET /health` succeeded. Posting
+`"My iPhone was stolen last night in Barcelona and I have banking apps on it."`
+returned HTTP 201. The parser produced `case_type = stolen_phone`,
+`location = Barcelona`, `incident_time = last night`, `device_type = iphone`,
+`theft_confirmed = true`, `banking_apps_present = true`,
+`device_locked = null`, and `sim_blocked = null`. The deterministic workflow
+produced tasks `stolen_phone_es_01` and `stolen_phone_es_08_bank`.
+`GET /api/cases/{id}` returned the stored case; PATCH changed
+`stolen_phone_es_01` to `completed`, and a later GET confirmed that status
+persisted.
+
+A second live case, `"My iPhone was stolen in Barcelona but I do not have any
+banking apps on it."`, produced `case_type = stolen_phone` and
+`banking_apps_present = false`. The police-report task appeared and the banking
+task did not. The unsupported live case, `"I forgot my umbrella at a
+restaurant."`, produced `case_type = unsupported`, null facts, an empty
+`missing_fields` list, and an empty task list.
+
+### Human verification completed
+
+Tommaso reran the backend test suite locally after the workflow-engine implementation and refinement.
+
+Final local result:
+- 86 tests passed
+- 1 existing Starlette/TestClient deprecation warning
+- `pip check` reported no broken requirements
+- `git diff --check` reported no whitespace errors, only normal LF/CRLF working-copy notices
+
+The Pull Request was reviewed by Gregorio Cerini, who confirmed that the engine used the verified workflow/source JSON without modifying it and preserved the intended deterministic, source-backed behavior. The PR was then approved and merged.
