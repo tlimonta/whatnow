@@ -69,13 +69,13 @@ src/backend/.venv/bin/python -m src.evaluation.run_benchmark --run --ids IC-001,
 src/backend/.venv/bin/python -m src.evaluation.run_benchmark --run
 ```
 
-Useful options: `--versions v3`, `--limit N`, `--model claude-sonnet-5-5 --temperature default` (Sonnet 5.5 rejects `temperature`), and `--raw-delimiters`. The last one does not neutralize fake `<user_message>` tags, which tests the prompt alone as IC-028 was designed to do.
+Useful options: `--versions v3`, `--limit N`, `--model claude-sonnet-5-5`, and `--raw-delimiters`. The last one does not neutralize fake `<user_message>` tags, which tests the prompt alone as IC-028 was designed to do.
 
 Each run writes a folder `outputs/evaluations/<UTC timestamp>_<model>/` containing:
 
 | File | Content |
 |---|---|
-| `metadata.json` | model, provider, temperature, max_tokens, SDK version, prompt versions, dataset version, git commit, dirty flag, neutralization flag, `mock` flag |
+| `metadata.json` | model, provider, sampling, max_tokens, SDK version, prompt versions, dataset version, git commit, dirty flag, neutralization flag, `mock` flag |
 | `records.jsonl` | one line per call: raw model output unmodified, provider error, parser result, parser warnings |
 | `metrics.json` | every metric per version and layer, as counts and rates |
 | `cases.csv` | one row per case, version and layer: what was right, what was wrong |
@@ -85,8 +85,8 @@ Real runs are committed as evidence. Mock runs should not be committed.
 
 ## Reproducibility and cost
 
-- Default settings: model `claude-haiku-4-5`, temperature 0, `max_tokens` 2048, one call per case and version, no retries beyond the SDK's own (2).
-- Even at temperature 0, model output is not guaranteed to be identical across runs. Compare runs by their `metadata.json`.
+- Default settings: model `claude-haiku-4-5`, provider-default sampling, `max_tokens` 2048, one call per case and version, no retries beyond the SDK's own (2).
+- Temperature cannot be set: anthropic SDK 1.x has no sampling parameters (a first real smoke test failed with `TypeError: Messages.create() got an unexpected keyword argument 'temperature'`, before any request was sent). The model's output can therefore vary between runs; compare runs by their `metadata.json` and do not over-read a difference of one or two cases.
 - The dry-run cost estimate is rough: about 4 characters per token, 400 output tokens per call, and hard-coded prices. Check the actual cost in the provider console after a run.
 
 ## Results

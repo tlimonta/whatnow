@@ -142,13 +142,3 @@ def test_incomplete_responses_are_provider_errors(monkeypatch, stop_reason):
     client, _ = make_client(monkeypatch, response(stop_reason=stop_reason))
     with pytest.raises(LLMProviderError):
         client.complete("PROMPT")
-
-
-def test_temperature_is_sent_only_when_set(monkeypatch):
-    client, messages = make_client(monkeypatch, response())
-    client.complete("PROMPT")
-    assert "temperature" not in messages.calls[0]
-
-    client.temperature = 0.0
-    client.complete("PROMPT")
-    assert messages.calls[1]["temperature"] == 0.0

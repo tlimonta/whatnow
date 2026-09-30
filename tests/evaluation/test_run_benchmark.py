@@ -86,21 +86,6 @@ def test_missing_api_key_gives_a_clean_exit(monkeypatch, tmp_path, capsys):
     assert list(tmp_path.iterdir()) == []
 
 
-@pytest.mark.parametrize(("value", "expected"), [("0", 0.0), ("default", None)])
-def test_temperature_option(monkeypatch, tmp_path, value, expected):
-    seen = {}
-
-    class FakeAnthropic(run_benchmark.MockClient):
-        def __init__(self, model=None, temperature=None):
-            seen["temperature"] = temperature
-            self.model = "fake-anthropic"
-            self.temperature = temperature
-
-    monkeypatch.setattr(run_benchmark, "AnthropicClient", FakeAnthropic)
-    args = ["--run", "--ids", "IC-001", "--versions", "v3", "--temperature", value, "--output-dir", str(tmp_path)]
-    assert run_benchmark.main(args) == 0
-    assert seen["temperature"] == expected
-
 
 class StolenClient(run_benchmark.MockClient):
     """Answers IC-001 correctly, so the real workflow engine produces tasks."""

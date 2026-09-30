@@ -26,12 +26,7 @@ class LLMClient(Protocol):
 class AnthropicClient:
     """Calls the Claude Messages API. Credentials come only from the environment."""
 
-    def __init__(
-        self,
-        model: str | None = None,
-        timeout_seconds: float = 60.0,
-        temperature: float | None = None,
-    ) -> None:
+    def __init__(self, model: str | None = None, timeout_seconds: float = 60.0) -> None:
         if not os.environ.get(API_KEY_ENV):
             raise LLMConfigurationError(
                 f"{API_KEY_ENV} is not set. Put it in your local .env or shell, never in Git."
@@ -41,9 +36,6 @@ class AnthropicClient:
 
         self._anthropic = anthropic
         self.model = model or os.environ.get(MODEL_ENV) or DEFAULT_MODEL
-        # None sends no sampling setting. Only the benchmark sets it (0 for repeatable
-        # runs); newer models such as claude-sonnet-5-5 reject non-default values.
-        self.temperature = temperature
         client_options: dict[str, object] = {
             "timeout": timeout_seconds,
             "max_retries": 2,
@@ -60,13 +52,12 @@ class AnthropicClient:
         anthropic = self._anthropic
         try:
             # No thinking or effort settings: Haiku 4.5 rejects `effort`, and the
-            # output is one short JSON object.
-            options = {} if self.temperature is None else {"temperature": self.temperature}
+            # output is one short JSON object. No temperature either: anthropic SDK 1.x
+            # does not accept sampling parameters, so the provider default is used.
             response = self._client.messages.create(
                 model=self.model,
                 max_tokens=MAX_TOKENS,
                 messages=[{"role": "user", "content": prompt}],
-                **options,
             )
         except anthropic.APITimeoutError as exc:
             raise LLMProviderError("The AI provider timed out") from exc

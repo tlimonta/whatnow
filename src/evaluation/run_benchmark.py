@@ -219,7 +219,7 @@ def run_metadata(client: LLMClient, args: argparse.Namespace, dataset: dict, cas
         "date_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "provider": "mock" if client.model == "mock" else "anthropic",
         "model": client.model,
-        "temperature": getattr(client, "temperature", None),
+        "sampling": "provider default (anthropic SDK 1.x accepts no temperature)",
         "max_tokens": MAX_TOKENS,
         "anthropic_sdk": sdk,
         "prompt_versions": args.versions,
@@ -254,7 +254,7 @@ def summary_markdown(meta: dict, metrics: dict) -> str:
     lines = [f"# Benchmark run {meta['date_utc']}", ""]
     if meta["mock"]:
         lines += ["**MOCK RUN: fake client, not a real model. These numbers mean nothing.**", ""]
-    lines += [f"Model `{meta['model']}`, temperature {meta['temperature']}, dataset "
+    lines += [f"Model `{meta['model']}`, sampling {meta['sampling']}, dataset "
               f"{meta['dataset']['version']} ({meta['dataset']['cases_run']} of {meta['dataset']['cases_total']} cases), "
               f"commit {meta['git_commit']}{' (dirty)' if meta['git_dirty'] else ''}, "
               f"delimiter neutralization {'on' if meta['delimiter_neutralization'] else 'off'}.", ""]
@@ -308,7 +308,6 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     mode.add_argument("--mock", action="store_true", help="use a fake client (no cost, meaningless scores)")
     p.add_argument("--versions", nargs="+", default=sorted(PROMPT_FILES), choices=sorted(PROMPT_FILES))
     p.add_argument("--model", default=None, help=f"default: WHATNOW_LLM_MODEL or {DEFAULT_MODEL}")
-    p.add_argument("--temperature", default="0", help="a number, or 'default' to send none (needed for claude-sonnet-5-5)")
     p.add_argument("--limit", type=int, default=None, help="only the first N cases")
     p.add_argument("--ids", default=None, help="comma-separated case ids, e.g. IC-001,IC-028")
     p.add_argument("--raw-delimiters", action="store_true",
@@ -320,7 +319,6 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
 def main(argv: list[str] | None = None, client: LLMClient | None = None) -> int:
     args = parse_args(argv)
     dataset, cases = load_cases(DATASET, args.limit, args.ids.split(",") if args.ids else None)
-    temperature = None if args.temperature == "default" else float(args.temperature)
     calls = build_prompts(args.versions, cases, neutralize=not args.raw_delimiters)
     model = args.model or DEFAULT_MODEL
 
@@ -332,7 +330,7 @@ def main(argv: list[str] | None = None, client: LLMClient | None = None) -> int:
 
     if client is None:
         try:
-            client = MockClient() if args.mock else AnthropicClient(model=args.model, temperature=temperature)
+            client = MockClient() if args.mock else AnthropicClient(model=args.model)
         except LLMConfigurationError as exc:
             print(f"Configuration error: {exc}", file=sys.stderr)
             return 2
