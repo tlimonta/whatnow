@@ -211,7 +211,7 @@ def _row(s: dict) -> dict:
 def run_metadata(client: LLMClient, args: argparse.Namespace, dataset: dict, cases: list[dict]) -> dict:
     def git(*cmd: str) -> str:
         try:
-            return subprocess.run(["git", *cmd], cwd=REPO_ROOT, capture_output=True, text=True).stdout.strip()
+            return subprocess.run(["git", *cmd], cwd=REPO_ROOT, capture_output=True, text=True).stdout.rstrip("\n")
         except OSError:
             return "unknown"
 

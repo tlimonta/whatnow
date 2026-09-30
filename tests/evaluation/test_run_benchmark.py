@@ -155,3 +155,14 @@ def test_failed_intake_is_not_reported_as_saved_without_tasks(tmp_path):
     integration = json.loads((run_dir / "metrics.json").read_text())["v3"]["integration"]
     assert integration["stolen_cases_without_tasks"]["count"] == 0
     assert integration["stolen_cases_intake_failed_ids"] == ["IC-001"]
+
+
+def test_uncommitted_file_names_are_not_truncated(tmp_path, monkeypatch):
+    # "git status --porcelain" lines start with a space for unstaged files (" M path").
+    class Done:
+        stdout = " M documentation/ai_logs/edoardo.md\n?? outputs/evaluations/x/\n"
+
+    monkeypatch.setattr(run_benchmark.subprocess, "run", lambda *a, **k: Done())
+    args = run_benchmark.parse_args(["--mock"])
+    meta = run_benchmark.run_metadata(run_benchmark.MockClient(), args, {"version": "v1", "cases": []}, [])
+    assert meta["git_dirty_files"] == ["documentation/ai_logs/edoardo.md"]
