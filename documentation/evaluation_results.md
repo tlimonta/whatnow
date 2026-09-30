@@ -23,7 +23,7 @@ Additional measurements requested in Tommaso's Phase E3 guidance:
 |---|---|
 | `missing_fields` exactly right | Expected value derived as in `evaluations/README.md`: expected nulls in schema order, `[]` for `unsupported` |
 | Stolen cases classified `lost_phone` / `uncertain_phone_loss` (with case ids) | V3 is deliberately cautious, and today only `stolen_phone` receives workflow tasks |
-| Integration outcome | Each post-parser result goes through the merged `CaseService.create_case_from_intake` and the verified workflow engine, locally with a throwaway in-memory store (no HTTP, no extra model call). Reports stolen-labelled cases that would get **no tasks** |
+| Integration outcome | Each post-parser result goes through the merged `CaseService.create_case_from_intake` and the verified workflow engine, locally with a throwaway in-memory store (no HTTP, no extra model call). For stolen-labelled cases it reports separately those **saved without tasks** (classified lost/uncertain) and those where **intake failed** (no case; the API would answer 502) |
 | Out-of-Spain cases (IC-040, Lisbon) | Reports parser result, then integration result, then which Spanish tasks are applied. Observed only; jurisdiction routing is a separate team decision and is not changed here |
 | By language | Valid output, classification and field extraction for English (30), Spanish (5), Italian (3) and mixed-language (2) cases. The non-English groups are small, so report counts |
 | Parser warnings | Grouped by rule, e.g. how often a fact was nulled for lack of evidence |
@@ -67,6 +67,9 @@ src/backend/.venv/bin/python -m src.evaluation.run_benchmark --run --ids IC-001,
 
 # 4. Full real run (120 paid calls).
 src/backend/.venv/bin/python -m src.evaluation.run_benchmark --run
+
+# 5. Re-score a saved run after a metric fix (no API calls).
+src/backend/.venv/bin/python -m src.evaluation.run_benchmark --rescore outputs/evaluations/<run folder>
 ```
 
 Useful options: `--versions v3`, `--limit N`, `--model claude-sonnet-5-5`, and `--raw-delimiters`. The last one does not neutralize fake `<user_message>` tags, which tests the prompt alone as IC-028 was designed to do.
@@ -75,7 +78,7 @@ Each run writes a folder `outputs/evaluations/<UTC timestamp>_<model>/` containi
 
 | File | Content |
 |---|---|
-| `metadata.json` | model, provider, sampling, max_tokens, SDK version, prompt versions, dataset version, git commit, dirty flag, neutralization flag, `mock` flag |
+| `metadata.json` | model, provider, sampling, max_tokens, SDK version, prompt versions, dataset version, git commit, uncommitted files (excluding `outputs/`), neutralization flag, `mock` flag, and `rescored_utc` if re-scored |
 | `records.jsonl` | one line per call: raw model output unmodified, provider error, parser result, parser warnings |
 | `metrics.json` | every metric per version and layer, as counts and rates |
 | `cases.csv` | one row per case, version and layer: what was right, what was wrong |

@@ -124,3 +124,34 @@ def test_integration_outcome_uses_the_real_workflow(tmp_path):
     assert integration["parser_warning_counts"]
     summary = (run_dir / "summary.md").read_text()
     assert "By language" in summary and "Out of Spain, IC-040" in summary
+
+
+def test_rescore_recomputes_results_without_calling_the_model(tmp_path, monkeypatch):
+    assert run_benchmark.main(["--ids", "IC-001", "--versions", "v3", "--output-dir", str(tmp_path)],
+                              client=StolenClient()) == 0
+    (run_dir,) = tmp_path.iterdir()
+    (run_dir / "summary.md").write_text("stale")
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("rescore must not call the model")
+
+    monkeypatch.setattr(run_benchmark, "call_model", forbidden)
+    monkeypatch.setattr(run_benchmark, "AnthropicClient", forbidden)
+    assert run_benchmark.main(["--rescore", str(run_dir)]) == 0
+    assert "## v3" in (run_dir / "summary.md").read_text()
+    assert "rescored_utc" in json.loads((run_dir / "metadata.json").read_text())
+
+
+def test_failed_intake_is_not_reported_as_saved_without_tasks(tmp_path):
+    class BrokenJson(run_benchmark.MockClient):
+        model = "broken"
+
+        def complete(self, prompt: str) -> str:
+            return "not json"
+
+    assert run_benchmark.main(["--ids", "IC-001", "--versions", "v3", "--output-dir", str(tmp_path)],
+                              client=BrokenJson()) == 0
+    (run_dir,) = tmp_path.iterdir()
+    integration = json.loads((run_dir / "metrics.json").read_text())["v3"]["integration"]
+    assert integration["stolen_cases_without_tasks"]["count"] == 0
+    assert integration["stolen_cases_intake_failed_ids"] == ["IC-001"]

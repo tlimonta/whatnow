@@ -161,7 +161,9 @@ def score(records: list[dict], cases: list[dict]) -> tuple[dict, list[dict]]:
 def integration_summary(records: list[dict], by_id: dict[str, dict]) -> dict:
     """What the merged integration does with each parser result, plus parser warnings."""
     stolen = [r for r in records if by_id[r["case_id"]]["expected_case_type"] == "stolen_phone"]
-    without_tasks = [r["case_id"] for r in stolen if not r["workflow_task_ids"]]
+    # No case at all (the API would answer 502) vs a case that was saved without tasks.
+    intake_failed = [r["case_id"] for r in stolen if r["parser_result"] is None]
+    without_tasks = [r["case_id"] for r in stolen if r["parser_result"] is not None and not r["workflow_task_ids"]]
     warnings: Counter = Counter()
     for r in records:
         # Group by rule, not by field: "set sim_blocked to null: ..." -> "set <field> to null: ..."
@@ -173,6 +175,9 @@ def integration_summary(records: list[dict], by_id: dict[str, dict]) -> dict:
         "stolen_cases_without_tasks": {"count": len(without_tasks), "total": len(stolen),
                                        "rate": round(len(without_tasks) / len(stolen), 4) if stolen else None},
         "stolen_cases_without_tasks_ids": without_tasks,
+        "stolen_cases_intake_failed": {"count": len(intake_failed), "total": len(stolen),
+                                       "rate": round(len(intake_failed) / len(stolen), 4) if stolen else None},
+        "stolen_cases_intake_failed_ids": intake_failed,
         "workflow_errors": sum(r["workflow_error"] is not None for r in records),
         "parser_warning_counts": dict(warnings.most_common()),
         "out_of_spain": [
@@ -227,7 +232,11 @@ def run_metadata(client: LLMClient, args: argparse.Namespace, dataset: dict, cas
         "dataset": {"file": "evaluations/intake_cases.json", "version": dataset["version"],
                     "cases_run": len(cases), "cases_total": len(dataset["cases"])},
         "git_commit": git("rev-parse", "--short", "HEAD"),
-        "git_dirty": bool(git("status", "--porcelain")),
+        # Paths only, so a reader can see whether the code itself was uncommitted.
+        # outputs/ is where results land, so it is not counted.
+        "git_dirty_files": [
+            line[3:] for line in git("status", "--porcelain").splitlines() if not line[3:].startswith("outputs/")
+        ],
     }
 
 
@@ -256,7 +265,8 @@ def summary_markdown(meta: dict, metrics: dict) -> str:
         lines += ["**MOCK RUN: fake client, not a real model. These numbers mean nothing.**", ""]
     lines += [f"Model `{meta['model']}`, sampling {meta['sampling']}, dataset "
               f"{meta['dataset']['version']} ({meta['dataset']['cases_run']} of {meta['dataset']['cases_total']} cases), "
-              f"commit {meta['git_commit']}{' (dirty)' if meta['git_dirty'] else ''}, "
+              f"commit {meta['git_commit']}"
+              f"{' (uncommitted: ' + ', '.join(meta['git_dirty_files']) + ')' if meta['git_dirty_files'] else ''}, "
               f"delimiter neutralization {'on' if meta['delimiter_neutralization'] else 'off'}.", ""]
     for version, layers in metrics.items():
         lines += [f"## {version}", "", "| Metric | Raw model output | After parser |", "|---|---|---|"]
@@ -265,16 +275,21 @@ def summary_markdown(meta: dict, metrics: dict) -> str:
         raw, post, integ = layers["raw"], layers["post_parser"], layers["integration"]
         lines += ["", f"Invalid reasons (raw): {raw['invalid_reasons'] or 'none'}. "
                   f"Confident-wrong ambiguous cases (raw): {raw['ambiguous_confident_wrong']}. "
-                  f"Unsupported-inference instances (raw): {raw['unsupported_inference_count']}.", ""]
+                  f"Unsupported-inference instances (raw): {raw['unsupported_inference_count']}. "
+                  f"Unsupported-inference cases that count only because the output is invalid (raw / after parser): "
+                  f"{raw['unsupported_inference_cases_invalid']} / {post['unsupported_inference_cases_invalid']}.", ""]
         lines += ["### By language (after parser)", "",
                   "| Language | Cases | Valid | Classification | Field extraction |", "|---|---|---|---|---|"]
         for lang, m in post["by_language"].items():
             lines.append(f"| {lang} | {m['cases']} | {cell(m['valid_output'])} | "
                          f"{cell(m['classification_accuracy'])} | {cell(m['field_extraction_accuracy'])} |")
         lines += ["", "### Integration outcome (merged CaseService + workflow engine, run locally)", "",
-                  f"- Stolen-labelled cases that would get **no tasks**: "
+                  f"- Stolen-labelled cases saved **without tasks**: "
                   f"{cell(integ['stolen_cases_without_tasks'])} "
                   f"{integ['stolen_cases_without_tasks_ids'] or ''}",
+                  f"- Stolen-labelled cases where intake failed (no case, API 502): "
+                  f"{cell(integ['stolen_cases_intake_failed'])} "
+                  f"{integ['stolen_cases_intake_failed_ids'] or ''}",
                   f"- Stolen cases classified lost/uncertain: {post['stolen_classified_lost_or_uncertain_ids'] or 'none'}",
                   f"- Workflow errors: {integ['workflow_errors']}"]
         for r in integ["out_of_spain"]:
@@ -306,6 +321,8 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     mode = p.add_mutually_exclusive_group()
     mode.add_argument("--run", action="store_true", help="make real, paid API calls")
     mode.add_argument("--mock", action="store_true", help="use a fake client (no cost, meaningless scores)")
+    mode.add_argument("--rescore", type=Path, metavar="RUN_DIR",
+                      help="recompute metrics and summary from a saved run's records.jsonl (no API calls)")
     p.add_argument("--versions", nargs="+", default=sorted(PROMPT_FILES), choices=sorted(PROMPT_FILES))
     p.add_argument("--model", default=None, help=f"default: WHATNOW_LLM_MODEL or {DEFAULT_MODEL}")
     p.add_argument("--limit", type=int, default=None, help="only the first N cases")
@@ -316,8 +333,28 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     return p.parse_args(argv)
 
 
+def rescore(run_dir: Path) -> int:
+    """Score saved raw outputs again, e.g. after a metric fix. The model is not called."""
+    meta = json.loads((run_dir / "metadata.json").read_text(encoding="utf-8"))
+    records = [json.loads(line) for line in (run_dir / "records.jsonl").read_text(encoding="utf-8").splitlines()]
+    dataset, all_cases = load_cases(DATASET)
+    if dataset["version"] != meta["dataset"]["version"]:
+        print(f"Dataset is now {dataset['version']}, the run used {meta['dataset']['version']}.", file=sys.stderr)
+        return 2
+    run_ids = {r["case_id"] for r in records}
+    if "git_dirty" in meta:  # runs recorded before the file list existed
+        meta["git_dirty_files"] = ["(not recorded)"] if meta.pop("git_dirty") else []
+    meta["rescored_utc"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    metrics, rows = score(records, [c for c in all_cases if c["id"] in run_ids])
+    write_results(run_dir, meta, metrics, rows)
+    print(f"Rescored {len(records)} records in {run_dir}")
+    return 0
+
+
 def main(argv: list[str] | None = None, client: LLMClient | None = None) -> int:
     args = parse_args(argv)
+    if args.rescore:
+        return rescore(args.rescore)
     dataset, cases = load_cases(DATASET, args.limit, args.ids.split(",") if args.ids else None)
     calls = build_prompts(args.versions, cases, neutralize=not args.raw_delimiters)
     model = args.model or DEFAULT_MODEL
