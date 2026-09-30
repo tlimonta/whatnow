@@ -28,6 +28,15 @@ def test_supported_task_statuses(status: TaskStatus) -> None:
     assert Task(title="Test task", status=status.value).status == status
 
 
+def test_legacy_task_serialization_omits_absent_workflow_fields() -> None:
+    task = Task(id="step", title="Test task")
+    assert task.model_dump(mode="json") == {
+        "id": "step",
+        "title": "Test task",
+        "status": "pending",
+    }
+
+
 @pytest.mark.parametrize("fields", [
     {"status": "done"},
     {"status": None},
