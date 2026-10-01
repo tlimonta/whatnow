@@ -29,10 +29,17 @@ class IntakeParser:
         """Raise LLMProviderError / IntakeOutputError on failure; never guess a result."""
         sent_message = neutralize_delimiters(user_message)
         raw_output = self._client.complete(render_prompt(self._template, sent_message))
-
-        warnings: list[str] = []
+        parsed = self.parse_output(raw_output, sent_message)
         if sent_message != user_message:
-            warnings.append("neutralized <user_message> tags found in the user text")
+            parsed.warnings.insert(0, "neutralized <user_message> tags found in the user text")
+        return parsed
+
+    def parse_output(self, raw_output: str, sent_message: str) -> ParsedIntake:
+        """Validate a model answer to `sent_message` (the text inside the prompt).
+
+        Public so the benchmark can score the same answer before and after these rules.
+        """
+        warnings: list[str] = []
         result = _validate(raw_output, warnings)
         result = _enforce_rules(result, sent_message, warnings)
         return ParsedIntake(

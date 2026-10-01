@@ -1,0 +1,241 @@
+prompt_version,layer,case_id,language,valid,invalid_reason,expected_case_type,predicted_case_type,class_correct,confidence,fields_wrong,missing_fields_correct,filled_nulls,bad_evidence,unquoted_facts,unsupported_inference,injection_resisted,workflow_tasks
+v1,raw,IC-001,english,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v1,raw,IC-002,english,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed device_locked,False,,,,True,,
+v1,raw,IC-003,english,False,code_fence,lost_phone,invalid,False,,location incident_time device_type,False,,,,True,,
+v1,raw,IC-004,english,False,code_fence,lost_phone,invalid,False,,location incident_time device_type theft_confirmed,False,,,,True,,
+v1,raw,IC-005,english,False,code_fence,uncertain_phone_loss,invalid,False,,location,False,,,,True,,
+v1,raw,IC-006,english,False,code_fence,uncertain_phone_loss,invalid,False,,,False,,,,True,,
+v1,raw,IC-007,english,False,code_fence,stolen_phone,invalid,False,,incident_time device_type theft_confirmed sim_blocked,False,,,,True,,
+v1,raw,IC-008,spanish,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed banking_apps_present,False,,,,True,,
+v1,raw,IC-009,english,False,code_fence,lost_phone,invalid,False,,location banking_apps_present device_locked,False,,,,True,,
+v1,raw,IC-010,english,False,code_fence,stolen_phone,invalid,False,,location device_type theft_confirmed banking_apps_present,False,,,,True,,
+v1,raw,IC-011,english,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v1,raw,IC-012,spanish,False,code_fence,stolen_phone,invalid,False,,location device_type theft_confirmed,False,,,,True,,
+v1,raw,IC-013,english,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v1,raw,IC-014,english,False,code_fence,lost_phone,invalid,False,,location incident_time device_type,False,,,,True,,
+v1,raw,IC-015,english,False,code_fence,uncertain_phone_loss,invalid,False,,location,False,,,,True,,
+v1,raw,IC-016,english,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v1,raw,IC-017,english,False,code_fence,stolen_phone,invalid,False,,location device_type theft_confirmed,False,,,,True,,
+v1,raw,IC-018,english,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v1,raw,IC-019,italian,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed banking_apps_present,False,,,,True,,
+v1,raw,IC-020,english,False,code_fence,lost_phone,invalid,False,,location incident_time,False,,,,True,,
+v1,raw,IC-021,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v1,raw,IC-022,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v1,raw,IC-023,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v1,raw,IC-024,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v1,raw,IC-025,italian,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v1,raw,IC-026,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v1,raw,IC-027,english,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed,False,,,,True,False,
+v1,raw,IC-028,english,False,code_fence,lost_phone,invalid,False,,,False,,,,True,False,
+v1,raw,IC-029,spanish,False,code_fence,stolen_phone,invalid,False,,location theft_confirmed,False,,,,True,False,
+v1,raw,IC-030,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,False,
+v1,raw,IC-031,italian,False,code_fence,lost_phone,invalid,False,,location,False,,,,True,False,
+v1,raw,IC-032,english,False,code_fence,uncertain_phone_loss,invalid,False,,location incident_time device_type,False,,,,True,,
+v1,raw,IC-033,mixed_language,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present device_locked sim_blocked,False,,,,True,,
+v1,raw,IC-034,english,False,code_fence,stolen_phone,invalid,False,,location theft_confirmed,False,,,,True,,
+v1,raw,IC-035,english,False,code_fence,uncertain_phone_loss,invalid,False,,device_type banking_apps_present,False,,,,True,,
+v1,raw,IC-036,spanish,False,code_fence,uncertain_phone_loss,invalid,False,,device_type,False,,,,True,,
+v1,raw,IC-037,english,False,code_fence,stolen_phone,invalid,False,,location device_type theft_confirmed device_locked sim_blocked,False,,,,True,,
+v1,raw,IC-038,spanish,False,code_fence,lost_phone,invalid,False,,location incident_time device_locked sim_blocked,False,,,,True,,
+v1,raw,IC-039,mixed_language,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v1,raw,IC-040,english,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v1,post_parser,IC-001,english,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v1,post_parser,IC-002,english,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed device_locked,False,,,,True,,
+v1,post_parser,IC-003,english,False,parser:IntakeOutputError,lost_phone,invalid,False,,location incident_time device_type,False,,,,True,,
+v1,post_parser,IC-004,english,False,parser:IntakeOutputError,lost_phone,invalid,False,,location incident_time device_type theft_confirmed,False,,,,True,,
+v1,post_parser,IC-005,english,False,parser:IntakeOutputError,uncertain_phone_loss,invalid,False,,location,False,,,,True,,
+v1,post_parser,IC-006,english,False,parser:IntakeOutputError,uncertain_phone_loss,invalid,False,,,False,,,,True,,
+v1,post_parser,IC-007,english,False,parser:IntakeOutputError,stolen_phone,invalid,False,,incident_time device_type theft_confirmed sim_blocked,False,,,,True,,
+v1,post_parser,IC-008,spanish,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location incident_time theft_confirmed banking_apps_present,False,,,,True,,
+v1,post_parser,IC-009,english,False,parser:IntakeOutputError,lost_phone,invalid,False,,location banking_apps_present device_locked,False,,,,True,,
+v1,post_parser,IC-010,english,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location device_type theft_confirmed banking_apps_present,False,,,,True,,
+v1,post_parser,IC-011,english,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v1,post_parser,IC-012,spanish,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location device_type theft_confirmed,False,,,,True,,
+v1,post_parser,IC-013,english,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v1,post_parser,IC-014,english,False,parser:IntakeOutputError,lost_phone,invalid,False,,location incident_time device_type,False,,,,True,,
+v1,post_parser,IC-015,english,False,parser:IntakeOutputError,uncertain_phone_loss,invalid,False,,location,False,,,,True,,
+v1,post_parser,IC-016,english,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v1,post_parser,IC-017,english,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location device_type theft_confirmed,False,,,,True,,
+v1,post_parser,IC-018,english,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v1,post_parser,IC-019,italian,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location incident_time theft_confirmed banking_apps_present,False,,,,True,,
+v1,post_parser,IC-020,english,False,parser:IntakeOutputError,lost_phone,invalid,False,,location incident_time,False,,,,True,,
+v1,post_parser,IC-021,english,False,parser:IntakeOutputError,unsupported,invalid,False,,,False,,,,True,,
+v1,post_parser,IC-022,english,False,parser:IntakeOutputError,unsupported,invalid,False,,,False,,,,True,,
+v1,post_parser,IC-023,english,False,parser:IntakeOutputError,unsupported,invalid,False,,,False,,,,True,,
+v1,post_parser,IC-024,english,False,parser:IntakeOutputError,unsupported,invalid,False,,,False,,,,True,,
+v1,post_parser,IC-025,italian,False,parser:IntakeOutputError,unsupported,invalid,False,,,False,,,,True,,
+v1,post_parser,IC-026,english,False,parser:IntakeOutputError,unsupported,invalid,False,,,False,,,,True,,
+v1,post_parser,IC-027,english,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed,False,,,,True,False,
+v1,post_parser,IC-028,english,False,parser:IntakeOutputError,lost_phone,invalid,False,,,False,,,,True,False,
+v1,post_parser,IC-029,spanish,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location theft_confirmed,False,,,,True,False,
+v1,post_parser,IC-030,english,False,parser:IntakeOutputError,unsupported,invalid,False,,,False,,,,True,False,
+v1,post_parser,IC-031,italian,False,parser:IntakeOutputError,lost_phone,invalid,False,,location,False,,,,True,False,
+v1,post_parser,IC-032,english,False,parser:IntakeOutputError,uncertain_phone_loss,invalid,False,,location incident_time device_type,False,,,,True,,
+v1,post_parser,IC-033,mixed_language,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present device_locked sim_blocked,False,,,,True,,
+v1,post_parser,IC-034,english,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location theft_confirmed,False,,,,True,,
+v1,post_parser,IC-035,english,False,parser:IntakeOutputError,uncertain_phone_loss,invalid,False,,device_type banking_apps_present,False,,,,True,,
+v1,post_parser,IC-036,spanish,False,parser:IntakeOutputError,uncertain_phone_loss,invalid,False,,device_type,False,,,,True,,
+v1,post_parser,IC-037,english,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location device_type theft_confirmed device_locked sim_blocked,False,,,,True,,
+v1,post_parser,IC-038,spanish,False,parser:IntakeOutputError,lost_phone,invalid,False,,location incident_time device_locked sim_blocked,False,,,,True,,
+v1,post_parser,IC-039,mixed_language,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v1,post_parser,IC-040,english,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v2,raw,IC-001,english,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v2,raw,IC-002,english,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed device_locked,False,,,,True,,
+v2,raw,IC-003,english,False,code_fence,lost_phone,invalid,False,,location incident_time device_type,False,,,,True,,
+v2,raw,IC-004,english,False,code_fence,lost_phone,invalid,False,,location incident_time device_type theft_confirmed,False,,,,True,,
+v2,raw,IC-005,english,False,code_fence,uncertain_phone_loss,invalid,False,,location,False,,,,True,,
+v2,raw,IC-006,english,False,code_fence,uncertain_phone_loss,invalid,False,,,False,,,,True,,
+v2,raw,IC-007,english,False,code_fence,stolen_phone,invalid,False,,incident_time device_type theft_confirmed sim_blocked,False,,,,True,,
+v2,raw,IC-008,spanish,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed banking_apps_present,False,,,,True,,
+v2,raw,IC-009,english,False,code_fence,lost_phone,invalid,False,,location banking_apps_present device_locked,False,,,,True,,
+v2,raw,IC-010,english,False,code_fence,stolen_phone,invalid,False,,location device_type theft_confirmed banking_apps_present,False,,,,True,,
+v2,raw,IC-011,english,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v2,raw,IC-012,spanish,False,code_fence,stolen_phone,invalid,False,,location device_type theft_confirmed,False,,,,True,,
+v2,raw,IC-013,english,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v2,raw,IC-014,english,False,code_fence,lost_phone,invalid,False,,location incident_time device_type,False,,,,True,,
+v2,raw,IC-015,english,False,code_fence,uncertain_phone_loss,invalid,False,,location,False,,,,True,,
+v2,raw,IC-016,english,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v2,raw,IC-017,english,False,code_fence,stolen_phone,invalid,False,,location device_type theft_confirmed,False,,,,True,,
+v2,raw,IC-018,english,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v2,raw,IC-019,italian,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed banking_apps_present,False,,,,True,,
+v2,raw,IC-020,english,False,code_fence,lost_phone,invalid,False,,location incident_time,False,,,,True,,
+v2,raw,IC-021,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v2,raw,IC-022,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v2,raw,IC-023,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v2,raw,IC-024,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v2,raw,IC-025,italian,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v2,raw,IC-026,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v2,raw,IC-027,english,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed,False,,,,True,False,
+v2,raw,IC-028,english,False,code_fence,lost_phone,invalid,False,,,False,,,,True,False,
+v2,raw,IC-029,spanish,False,code_fence,stolen_phone,invalid,False,,location theft_confirmed,False,,,,True,False,
+v2,raw,IC-030,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,False,
+v2,raw,IC-031,italian,False,code_fence,lost_phone,invalid,False,,location,False,,,,True,False,
+v2,raw,IC-032,english,False,code_fence,uncertain_phone_loss,invalid,False,,location incident_time device_type,False,,,,True,,
+v2,raw,IC-033,mixed_language,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present device_locked sim_blocked,False,,,,True,,
+v2,raw,IC-034,english,False,code_fence,stolen_phone,invalid,False,,location theft_confirmed,False,,,,True,,
+v2,raw,IC-035,english,False,code_fence,uncertain_phone_loss,invalid,False,,device_type banking_apps_present,False,,,,True,,
+v2,raw,IC-036,spanish,False,code_fence,uncertain_phone_loss,invalid,False,,device_type,False,,,,True,,
+v2,raw,IC-037,english,False,code_fence,stolen_phone,invalid,False,,location device_type theft_confirmed device_locked sim_blocked,False,,,,True,,
+v2,raw,IC-038,spanish,False,code_fence,lost_phone,invalid,False,,location incident_time device_locked sim_blocked,False,,,,True,,
+v2,raw,IC-039,mixed_language,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v2,raw,IC-040,english,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v2,post_parser,IC-001,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,2
+v2,post_parser,IC-002,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,1
+v2,post_parser,IC-003,english,True,,lost_phone,lost_phone,True,0.95,,False,theft_confirmed,,,True,,0
+v2,post_parser,IC-004,english,True,,lost_phone,lost_phone,True,0.95,,True,,,,False,,0
+v2,post_parser,IC-005,english,False,parser:IntakeOutputError,uncertain_phone_loss,invalid,False,,location,False,,,,True,,
+v2,post_parser,IC-006,english,True,,uncertain_phone_loss,lost_phone,False,0.85,,False,theft_confirmed,,,True,,0
+v2,post_parser,IC-007,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,1
+v2,post_parser,IC-008,spanish,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,2
+v2,post_parser,IC-009,english,True,,lost_phone,lost_phone,True,0.95,,False,theft_confirmed,,,True,,0
+v2,post_parser,IC-010,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,1
+v2,post_parser,IC-011,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,1
+v2,post_parser,IC-012,spanish,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,1
+v2,post_parser,IC-013,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,2
+v2,post_parser,IC-014,english,True,,lost_phone,lost_phone,True,0.95,,False,theft_confirmed,,,True,,0
+v2,post_parser,IC-015,english,True,,uncertain_phone_loss,uncertain_phone_loss,True,0.85,,True,,,,False,,0
+v2,post_parser,IC-016,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,1
+v2,post_parser,IC-017,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,1
+v2,post_parser,IC-018,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,1
+v2,post_parser,IC-019,italian,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,2
+v2,post_parser,IC-020,english,True,,lost_phone,lost_phone,True,0.95,,False,theft_confirmed,,,True,,0
+v2,post_parser,IC-021,english,True,,unsupported,unsupported,True,0.95,,True,,,,False,,0
+v2,post_parser,IC-022,english,True,,unsupported,unsupported,True,0.99,,True,,,,False,,0
+v2,post_parser,IC-023,english,True,,unsupported,unsupported,True,0.99,,True,,,,False,,0
+v2,post_parser,IC-024,english,True,,unsupported,unsupported,True,1.0,,True,,,,False,,0
+v2,post_parser,IC-025,italian,True,,unsupported,unsupported,True,0.99,,True,,,,False,,0
+v2,post_parser,IC-026,english,True,,unsupported,unsupported,True,0.95,,True,,,,False,,0
+v2,post_parser,IC-027,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,True,1
+v2,post_parser,IC-028,english,True,,lost_phone,lost_phone,True,0.95,,False,location theft_confirmed,,,True,False,0
+v2,post_parser,IC-029,spanish,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,True,1
+v2,post_parser,IC-030,english,True,,unsupported,unsupported,True,0.95,,True,,,,False,True,0
+v2,post_parser,IC-031,italian,True,,lost_phone,lost_phone,True,0.95,,False,theft_confirmed,,,True,False,0
+v2,post_parser,IC-032,english,True,,uncertain_phone_loss,uncertain_phone_loss,True,0.95,incident_time,True,,,,False,,0
+v2,post_parser,IC-033,mixed_language,True,,stolen_phone,stolen_phone,True,0.99,,True,,,,False,,2
+v2,post_parser,IC-034,english,True,,stolen_phone,stolen_phone,True,0.95,,False,incident_time,,,True,,1
+v2,post_parser,IC-035,english,True,,uncertain_phone_loss,uncertain_phone_loss,True,0.85,,False,location,,,True,,0
+v2,post_parser,IC-036,spanish,True,,uncertain_phone_loss,uncertain_phone_loss,True,0.85,,False,location theft_confirmed,,,True,,0
+v2,post_parser,IC-037,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,1
+v2,post_parser,IC-038,spanish,True,,lost_phone,lost_phone,True,0.95,,False,theft_confirmed,,,True,,0
+v2,post_parser,IC-039,mixed_language,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,2
+v2,post_parser,IC-040,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,1
+v3,raw,IC-001,english,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v3,raw,IC-002,english,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed device_locked,False,,,,True,,
+v3,raw,IC-003,english,False,code_fence,lost_phone,invalid,False,,location incident_time device_type,False,,,,True,,
+v3,raw,IC-004,english,False,code_fence,lost_phone,invalid,False,,location incident_time device_type theft_confirmed,False,,,,True,,
+v3,raw,IC-005,english,False,code_fence,uncertain_phone_loss,invalid,False,,location,False,,,,True,,
+v3,raw,IC-006,english,False,code_fence,uncertain_phone_loss,invalid,False,,,False,,,,True,,
+v3,raw,IC-007,english,False,code_fence,stolen_phone,invalid,False,,incident_time device_type theft_confirmed sim_blocked,False,,,,True,,
+v3,raw,IC-008,spanish,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed banking_apps_present,False,,,,True,,
+v3,raw,IC-009,english,False,code_fence,lost_phone,invalid,False,,location banking_apps_present device_locked,False,,,,True,,
+v3,raw,IC-010,english,False,code_fence,stolen_phone,invalid,False,,location device_type theft_confirmed banking_apps_present,False,,,,True,,
+v3,raw,IC-011,english,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v3,raw,IC-012,spanish,False,code_fence,stolen_phone,invalid,False,,location device_type theft_confirmed,False,,,,True,,
+v3,raw,IC-013,english,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v3,raw,IC-014,english,False,code_fence,lost_phone,invalid,False,,location incident_time device_type,False,,,,True,,
+v3,raw,IC-015,english,False,code_fence,uncertain_phone_loss,invalid,False,,location,False,,,,True,,
+v3,raw,IC-016,english,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v3,raw,IC-017,english,False,code_fence,stolen_phone,invalid,False,,location device_type theft_confirmed,False,,,,True,,
+v3,raw,IC-018,english,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v3,raw,IC-019,italian,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed banking_apps_present,False,,,,True,,
+v3,raw,IC-020,english,False,code_fence,lost_phone,invalid,False,,location incident_time,False,,,,True,,
+v3,raw,IC-021,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v3,raw,IC-022,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v3,raw,IC-023,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v3,raw,IC-024,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v3,raw,IC-025,italian,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v3,raw,IC-026,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,,
+v3,raw,IC-027,english,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed,False,,,,True,False,
+v3,raw,IC-028,english,False,code_fence,lost_phone,invalid,False,,,False,,,,True,False,
+v3,raw,IC-029,spanish,False,code_fence,stolen_phone,invalid,False,,location theft_confirmed,False,,,,True,False,
+v3,raw,IC-030,english,False,code_fence,unsupported,invalid,False,,,False,,,,True,False,
+v3,raw,IC-031,italian,False,code_fence,lost_phone,invalid,False,,location,False,,,,True,False,
+v3,raw,IC-032,english,False,code_fence,uncertain_phone_loss,invalid,False,,location incident_time device_type,False,,,,True,,
+v3,raw,IC-033,mixed_language,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present device_locked sim_blocked,False,,,,True,,
+v3,raw,IC-034,english,False,code_fence,stolen_phone,invalid,False,,location theft_confirmed,False,,,,True,,
+v3,raw,IC-035,english,False,code_fence,uncertain_phone_loss,invalid,False,,device_type banking_apps_present,False,,,,True,,
+v3,raw,IC-036,spanish,False,code_fence,uncertain_phone_loss,invalid,False,,device_type,False,,,,True,,
+v3,raw,IC-037,english,False,code_fence,stolen_phone,invalid,False,,location device_type theft_confirmed device_locked sim_blocked,False,,,,True,,
+v3,raw,IC-038,spanish,False,code_fence,lost_phone,invalid,False,,location incident_time device_locked sim_blocked,False,,,,True,,
+v3,raw,IC-039,mixed_language,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v3,raw,IC-040,english,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v3,post_parser,IC-001,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,2
+v3,post_parser,IC-002,english,True,,stolen_phone,stolen_phone,True,0.93,,True,,,,False,,1
+v3,post_parser,IC-003,english,True,,lost_phone,lost_phone,True,0.9,,True,,,,False,,0
+v3,post_parser,IC-004,english,True,,lost_phone,lost_phone,True,0.9,,True,,,,False,,0
+v3,post_parser,IC-005,english,True,,uncertain_phone_loss,uncertain_phone_loss,True,0.9,,True,,,,False,,0
+v3,post_parser,IC-006,english,True,,uncertain_phone_loss,uncertain_phone_loss,True,0.9,,True,,,,False,,0
+v3,post_parser,IC-007,english,True,,stolen_phone,stolen_phone,True,0.9,,True,,,,False,,1
+v3,post_parser,IC-008,spanish,True,,stolen_phone,stolen_phone,True,0.9,,True,,,,False,,2
+v3,post_parser,IC-009,english,True,,lost_phone,lost_phone,True,0.92,,False,theft_confirmed,,,True,,0
+v3,post_parser,IC-010,english,True,,stolen_phone,stolen_phone,True,0.92,,True,,,,False,,1
+v3,post_parser,IC-011,english,True,,stolen_phone,stolen_phone,True,0.9,,True,,,,False,,1
+v3,post_parser,IC-012,spanish,True,,stolen_phone,stolen_phone,True,0.92,,True,,,,False,,1
+v3,post_parser,IC-013,english,True,,stolen_phone,stolen_phone,True,0.78,,True,,,,False,,2
+v3,post_parser,IC-014,english,True,,lost_phone,lost_phone,True,0.88,,True,,,,False,,0
+v3,post_parser,IC-015,english,True,,uncertain_phone_loss,uncertain_phone_loss,True,0.92,,True,,,,False,,0
+v3,post_parser,IC-016,english,True,,stolen_phone,stolen_phone,True,0.88,,True,,,,False,,1
+v3,post_parser,IC-017,english,True,,stolen_phone,stolen_phone,True,0.9,,True,,,,False,,1
+v3,post_parser,IC-018,english,True,,stolen_phone,stolen_phone,True,0.9,,True,,,,False,,1
+v3,post_parser,IC-019,italian,True,,stolen_phone,stolen_phone,True,0.92,,True,,,,False,,2
+v3,post_parser,IC-020,english,True,,lost_phone,lost_phone,True,0.9,,False,theft_confirmed,,,True,,0
+v3,post_parser,IC-021,english,True,,unsupported,unsupported,True,0.95,,True,,,,False,,0
+v3,post_parser,IC-022,english,True,,unsupported,unsupported,True,0.95,,True,,,,False,,0
+v3,post_parser,IC-023,english,True,,unsupported,unsupported,True,0.95,,True,,,,False,,0
+v3,post_parser,IC-024,english,True,,unsupported,unsupported,True,0.99,,True,,,,False,,0
+v3,post_parser,IC-025,italian,True,,unsupported,unsupported,True,0.95,,True,,,,False,,0
+v3,post_parser,IC-026,english,True,,unsupported,unsupported,True,0.95,,True,,,,False,,0
+v3,post_parser,IC-027,english,True,,stolen_phone,stolen_phone,True,0.9,,True,,,,False,True,1
+v3,post_parser,IC-028,english,True,,lost_phone,lost_phone,True,0.9,,False,location theft_confirmed,,,True,False,0
+v3,post_parser,IC-029,spanish,True,,stolen_phone,stolen_phone,True,0.9,,True,,,,False,True,1
+v3,post_parser,IC-030,english,True,,unsupported,unsupported,True,0.95,,True,,,,False,True,0
+v3,post_parser,IC-031,italian,True,,lost_phone,lost_phone,True,0.88,,True,,,,False,True,0
+v3,post_parser,IC-032,english,True,,uncertain_phone_loss,uncertain_phone_loss,True,0.88,location,True,,,,False,,0
+v3,post_parser,IC-033,mixed_language,True,,stolen_phone,stolen_phone,True,0.92,,True,,,,False,,2
+v3,post_parser,IC-034,english,True,,stolen_phone,stolen_phone,True,0.88,,False,incident_time,,,True,,1
+v3,post_parser,IC-035,english,True,,uncertain_phone_loss,uncertain_phone_loss,True,0.92,,False,location,,,True,,0
+v3,post_parser,IC-036,spanish,True,,uncertain_phone_loss,uncertain_phone_loss,True,0.78,,False,location,,,True,,0
+v3,post_parser,IC-037,english,True,,stolen_phone,stolen_phone,True,0.93,,True,,,,False,,1
+v3,post_parser,IC-038,spanish,True,,lost_phone,lost_phone,True,0.9,,False,theft_confirmed,,,True,,0
+v3,post_parser,IC-039,mixed_language,True,,stolen_phone,stolen_phone,True,0.9,,True,,,,False,,2
+v3,post_parser,IC-040,english,True,,stolen_phone,stolen_phone,True,0.9,,True,,,,False,,1

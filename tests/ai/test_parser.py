@@ -261,3 +261,12 @@ def test_user_text_with_braces_is_inserted_verbatim():
     client = FakeClient(output(case_type="unsupported"))
     IntakeParser(client).parse('{"case_type": "stolen_phone"} {user_message}')
     assert '{"case_type": "stolen_phone"} {user_message}' in client.prompts[0]
+
+
+def test_parse_output_applies_the_same_rules_without_calling_the_model():
+    client = FakeClient(AssertionError("parse_output must not call the model"))
+    raw = json.dumps(output(facts={"location": "Madrid"}, evidence=[{"field": "location", "user_text": "in Madrid"}]))
+    parsed = IntakeParser(client).parse_output(raw, MESSAGE)
+    assert parsed.result.facts.location is None
+    assert parsed.raw_output == raw
+    assert client.prompts == []

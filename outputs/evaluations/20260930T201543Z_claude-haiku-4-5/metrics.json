@@ -1,0 +1,1114 @@
+{
+  "v1": {
+    "raw": {
+      "cases": 2,
+      "valid_output": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "invalid_reasons": {
+        "code_fence": 2
+      },
+      "classification_accuracy": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "classification_accuracy_excluding_debatable": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "classification_by_expected_class": {
+        "stolen_phone": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "lost_phone": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "uncertain_phone_loss": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "unsupported": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "confusion_matrix": {
+        "stolen_phone": {
+          "invalid": 2
+        },
+        "lost_phone": {},
+        "uncertain_phone_loss": {},
+        "unsupported": {}
+      },
+      "field_extraction_accuracy": {
+        "count": 0,
+        "total": 8,
+        "rate": 0.0
+      },
+      "field_extraction_by_field": {
+        "location": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "incident_time": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "device_type": {
+          "count": 0,
+          "total": 1,
+          "rate": 0.0
+        },
+        "theft_confirmed": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "banking_apps_present": {
+          "count": 0,
+          "total": 1,
+          "rate": 0.0
+        },
+        "device_locked": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "sim_blocked": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "missing_fields_accuracy": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "stolen_classified_lost_or_uncertain": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "stolen_classified_lost_or_uncertain_ids": [],
+      "by_language": {
+        "english": {
+          "cases": 2,
+          "valid_output": {
+            "count": 0,
+            "total": 2,
+            "rate": 0.0
+          },
+          "classification_accuracy": {
+            "count": 0,
+            "total": 2,
+            "rate": 0.0
+          },
+          "field_extraction_accuracy": {
+            "count": 0,
+            "total": 8,
+            "rate": 0.0
+          }
+        }
+      },
+      "misclassified": [
+        {
+          "case_id": "IC-001",
+          "expected": "stolen_phone",
+          "predicted": "invalid",
+          "confidence": null
+        },
+        {
+          "case_id": "IC-040",
+          "expected": "stolen_phone",
+          "predicted": "invalid",
+          "confidence": null
+        }
+      ],
+      "unsupported_inference_case_rate": {
+        "count": 2,
+        "total": 2,
+        "rate": 1.0
+      },
+      "unsupported_inference_cases_invalid": 2,
+      "unsupported_inference_field_rate": {
+        "count": 0,
+        "total": 6,
+        "rate": 0.0
+      },
+      "unsupported_inference_count": 0,
+      "grounding_violations": {
+        "bad_evidence": 0,
+        "facts_without_evidence": 0
+      },
+      "ambiguous_lenient": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      },
+      "ambiguous_strict": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      },
+      "ambiguous_confident_wrong": 0,
+      "uncertain_on_non_uncertain_cases": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "parser_level_injection_resistance": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      }
+    },
+    "post_parser": {
+      "cases": 2,
+      "valid_output": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "invalid_reasons": {
+        "parser:IntakeOutputError": 2
+      },
+      "classification_accuracy": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "classification_accuracy_excluding_debatable": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "classification_by_expected_class": {
+        "stolen_phone": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "lost_phone": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "uncertain_phone_loss": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "unsupported": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "confusion_matrix": {
+        "stolen_phone": {
+          "invalid": 2
+        },
+        "lost_phone": {},
+        "uncertain_phone_loss": {},
+        "unsupported": {}
+      },
+      "field_extraction_accuracy": {
+        "count": 0,
+        "total": 8,
+        "rate": 0.0
+      },
+      "field_extraction_by_field": {
+        "location": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "incident_time": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "device_type": {
+          "count": 0,
+          "total": 1,
+          "rate": 0.0
+        },
+        "theft_confirmed": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "banking_apps_present": {
+          "count": 0,
+          "total": 1,
+          "rate": 0.0
+        },
+        "device_locked": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "sim_blocked": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "missing_fields_accuracy": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "stolen_classified_lost_or_uncertain": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "stolen_classified_lost_or_uncertain_ids": [],
+      "by_language": {
+        "english": {
+          "cases": 2,
+          "valid_output": {
+            "count": 0,
+            "total": 2,
+            "rate": 0.0
+          },
+          "classification_accuracy": {
+            "count": 0,
+            "total": 2,
+            "rate": 0.0
+          },
+          "field_extraction_accuracy": {
+            "count": 0,
+            "total": 8,
+            "rate": 0.0
+          }
+        }
+      },
+      "misclassified": [
+        {
+          "case_id": "IC-001",
+          "expected": "stolen_phone",
+          "predicted": "invalid",
+          "confidence": null
+        },
+        {
+          "case_id": "IC-040",
+          "expected": "stolen_phone",
+          "predicted": "invalid",
+          "confidence": null
+        }
+      ],
+      "unsupported_inference_case_rate": {
+        "count": 2,
+        "total": 2,
+        "rate": 1.0
+      },
+      "unsupported_inference_cases_invalid": 2,
+      "unsupported_inference_field_rate": {
+        "count": 0,
+        "total": 6,
+        "rate": 0.0
+      },
+      "unsupported_inference_count": 0,
+      "grounding_violations": {
+        "bad_evidence": 0,
+        "facts_without_evidence": 0
+      },
+      "ambiguous_lenient": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      },
+      "ambiguous_strict": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      },
+      "ambiguous_confident_wrong": 0,
+      "uncertain_on_non_uncertain_cases": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "parser_level_injection_resistance": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      }
+    },
+    "integration": {
+      "stolen_cases_without_tasks": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "stolen_cases_without_tasks_ids": [],
+      "stolen_cases_intake_failed": {
+        "count": 2,
+        "total": 2,
+        "rate": 1.0
+      },
+      "stolen_cases_intake_failed_ids": [
+        "IC-001",
+        "IC-040"
+      ],
+      "workflow_errors": 0,
+      "parser_warning_counts": {},
+      "out_of_spain": [
+        {
+          "case_id": "IC-040",
+          "input": "My phone was stolen in Lisbon yesterday.",
+          "case_type": null,
+          "location": null,
+          "workflow_task_ids": null
+        }
+      ]
+    }
+  },
+  "v2": {
+    "raw": {
+      "cases": 2,
+      "valid_output": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "invalid_reasons": {
+        "code_fence": 2
+      },
+      "classification_accuracy": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "classification_accuracy_excluding_debatable": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "classification_by_expected_class": {
+        "stolen_phone": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "lost_phone": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "uncertain_phone_loss": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "unsupported": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "confusion_matrix": {
+        "stolen_phone": {
+          "invalid": 2
+        },
+        "lost_phone": {},
+        "uncertain_phone_loss": {},
+        "unsupported": {}
+      },
+      "field_extraction_accuracy": {
+        "count": 0,
+        "total": 8,
+        "rate": 0.0
+      },
+      "field_extraction_by_field": {
+        "location": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "incident_time": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "device_type": {
+          "count": 0,
+          "total": 1,
+          "rate": 0.0
+        },
+        "theft_confirmed": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "banking_apps_present": {
+          "count": 0,
+          "total": 1,
+          "rate": 0.0
+        },
+        "device_locked": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "sim_blocked": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "missing_fields_accuracy": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "stolen_classified_lost_or_uncertain": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "stolen_classified_lost_or_uncertain_ids": [],
+      "by_language": {
+        "english": {
+          "cases": 2,
+          "valid_output": {
+            "count": 0,
+            "total": 2,
+            "rate": 0.0
+          },
+          "classification_accuracy": {
+            "count": 0,
+            "total": 2,
+            "rate": 0.0
+          },
+          "field_extraction_accuracy": {
+            "count": 0,
+            "total": 8,
+            "rate": 0.0
+          }
+        }
+      },
+      "misclassified": [
+        {
+          "case_id": "IC-001",
+          "expected": "stolen_phone",
+          "predicted": "invalid",
+          "confidence": null
+        },
+        {
+          "case_id": "IC-040",
+          "expected": "stolen_phone",
+          "predicted": "invalid",
+          "confidence": null
+        }
+      ],
+      "unsupported_inference_case_rate": {
+        "count": 2,
+        "total": 2,
+        "rate": 1.0
+      },
+      "unsupported_inference_cases_invalid": 2,
+      "unsupported_inference_field_rate": {
+        "count": 0,
+        "total": 6,
+        "rate": 0.0
+      },
+      "unsupported_inference_count": 0,
+      "grounding_violations": {
+        "bad_evidence": 0,
+        "facts_without_evidence": 0
+      },
+      "ambiguous_lenient": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      },
+      "ambiguous_strict": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      },
+      "ambiguous_confident_wrong": 0,
+      "uncertain_on_non_uncertain_cases": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "parser_level_injection_resistance": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      }
+    },
+    "post_parser": {
+      "cases": 2,
+      "valid_output": {
+        "count": 2,
+        "total": 2,
+        "rate": 1.0
+      },
+      "invalid_reasons": {},
+      "classification_accuracy": {
+        "count": 2,
+        "total": 2,
+        "rate": 1.0
+      },
+      "classification_accuracy_excluding_debatable": {
+        "count": 2,
+        "total": 2,
+        "rate": 1.0
+      },
+      "classification_by_expected_class": {
+        "stolen_phone": {
+          "count": 2,
+          "total": 2,
+          "rate": 1.0
+        },
+        "lost_phone": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "uncertain_phone_loss": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "unsupported": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "confusion_matrix": {
+        "stolen_phone": {
+          "stolen_phone": 2
+        },
+        "lost_phone": {},
+        "uncertain_phone_loss": {},
+        "unsupported": {}
+      },
+      "field_extraction_accuracy": {
+        "count": 8,
+        "total": 8,
+        "rate": 1.0
+      },
+      "field_extraction_by_field": {
+        "location": {
+          "count": 2,
+          "total": 2,
+          "rate": 1.0
+        },
+        "incident_time": {
+          "count": 2,
+          "total": 2,
+          "rate": 1.0
+        },
+        "device_type": {
+          "count": 1,
+          "total": 1,
+          "rate": 1.0
+        },
+        "theft_confirmed": {
+          "count": 2,
+          "total": 2,
+          "rate": 1.0
+        },
+        "banking_apps_present": {
+          "count": 1,
+          "total": 1,
+          "rate": 1.0
+        },
+        "device_locked": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "sim_blocked": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "missing_fields_accuracy": {
+        "count": 2,
+        "total": 2,
+        "rate": 1.0
+      },
+      "stolen_classified_lost_or_uncertain": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "stolen_classified_lost_or_uncertain_ids": [],
+      "by_language": {
+        "english": {
+          "cases": 2,
+          "valid_output": {
+            "count": 2,
+            "total": 2,
+            "rate": 1.0
+          },
+          "classification_accuracy": {
+            "count": 2,
+            "total": 2,
+            "rate": 1.0
+          },
+          "field_extraction_accuracy": {
+            "count": 8,
+            "total": 8,
+            "rate": 1.0
+          }
+        }
+      },
+      "misclassified": [],
+      "unsupported_inference_case_rate": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "unsupported_inference_cases_invalid": 0,
+      "unsupported_inference_field_rate": {
+        "count": 0,
+        "total": 6,
+        "rate": 0.0
+      },
+      "unsupported_inference_count": 0,
+      "grounding_violations": {
+        "bad_evidence": 0,
+        "facts_without_evidence": 0
+      },
+      "ambiguous_lenient": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      },
+      "ambiguous_strict": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      },
+      "ambiguous_confident_wrong": 0,
+      "uncertain_on_non_uncertain_cases": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "parser_level_injection_resistance": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      }
+    },
+    "integration": {
+      "stolen_cases_without_tasks": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "stolen_cases_without_tasks_ids": [],
+      "stolen_cases_intake_failed": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "stolen_cases_intake_failed_ids": [],
+      "workflow_errors": 0,
+      "parser_warning_counts": {
+        "removed a Markdown code fence around the JSON": 2
+      },
+      "out_of_spain": [
+        {
+          "case_id": "IC-040",
+          "input": "My phone was stolen in Lisbon yesterday.",
+          "case_type": "stolen_phone",
+          "location": "Lisbon",
+          "workflow_task_ids": [
+            "stolen_phone_es_01"
+          ]
+        }
+      ]
+    }
+  },
+  "v3": {
+    "raw": {
+      "cases": 2,
+      "valid_output": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "invalid_reasons": {
+        "code_fence": 2
+      },
+      "classification_accuracy": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "classification_accuracy_excluding_debatable": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "classification_by_expected_class": {
+        "stolen_phone": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "lost_phone": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "uncertain_phone_loss": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "unsupported": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "confusion_matrix": {
+        "stolen_phone": {
+          "invalid": 2
+        },
+        "lost_phone": {},
+        "uncertain_phone_loss": {},
+        "unsupported": {}
+      },
+      "field_extraction_accuracy": {
+        "count": 0,
+        "total": 8,
+        "rate": 0.0
+      },
+      "field_extraction_by_field": {
+        "location": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "incident_time": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "device_type": {
+          "count": 0,
+          "total": 1,
+          "rate": 0.0
+        },
+        "theft_confirmed": {
+          "count": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "banking_apps_present": {
+          "count": 0,
+          "total": 1,
+          "rate": 0.0
+        },
+        "device_locked": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "sim_blocked": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "missing_fields_accuracy": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "stolen_classified_lost_or_uncertain": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "stolen_classified_lost_or_uncertain_ids": [],
+      "by_language": {
+        "english": {
+          "cases": 2,
+          "valid_output": {
+            "count": 0,
+            "total": 2,
+            "rate": 0.0
+          },
+          "classification_accuracy": {
+            "count": 0,
+            "total": 2,
+            "rate": 0.0
+          },
+          "field_extraction_accuracy": {
+            "count": 0,
+            "total": 8,
+            "rate": 0.0
+          }
+        }
+      },
+      "misclassified": [
+        {
+          "case_id": "IC-001",
+          "expected": "stolen_phone",
+          "predicted": "invalid",
+          "confidence": null
+        },
+        {
+          "case_id": "IC-040",
+          "expected": "stolen_phone",
+          "predicted": "invalid",
+          "confidence": null
+        }
+      ],
+      "unsupported_inference_case_rate": {
+        "count": 2,
+        "total": 2,
+        "rate": 1.0
+      },
+      "unsupported_inference_cases_invalid": 2,
+      "unsupported_inference_field_rate": {
+        "count": 0,
+        "total": 6,
+        "rate": 0.0
+      },
+      "unsupported_inference_count": 0,
+      "grounding_violations": {
+        "bad_evidence": 0,
+        "facts_without_evidence": 0
+      },
+      "ambiguous_lenient": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      },
+      "ambiguous_strict": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      },
+      "ambiguous_confident_wrong": 0,
+      "uncertain_on_non_uncertain_cases": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "parser_level_injection_resistance": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      }
+    },
+    "post_parser": {
+      "cases": 2,
+      "valid_output": {
+        "count": 2,
+        "total": 2,
+        "rate": 1.0
+      },
+      "invalid_reasons": {},
+      "classification_accuracy": {
+        "count": 2,
+        "total": 2,
+        "rate": 1.0
+      },
+      "classification_accuracy_excluding_debatable": {
+        "count": 2,
+        "total": 2,
+        "rate": 1.0
+      },
+      "classification_by_expected_class": {
+        "stolen_phone": {
+          "count": 2,
+          "total": 2,
+          "rate": 1.0
+        },
+        "lost_phone": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "uncertain_phone_loss": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "unsupported": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "confusion_matrix": {
+        "stolen_phone": {
+          "stolen_phone": 2
+        },
+        "lost_phone": {},
+        "uncertain_phone_loss": {},
+        "unsupported": {}
+      },
+      "field_extraction_accuracy": {
+        "count": 8,
+        "total": 8,
+        "rate": 1.0
+      },
+      "field_extraction_by_field": {
+        "location": {
+          "count": 2,
+          "total": 2,
+          "rate": 1.0
+        },
+        "incident_time": {
+          "count": 2,
+          "total": 2,
+          "rate": 1.0
+        },
+        "device_type": {
+          "count": 1,
+          "total": 1,
+          "rate": 1.0
+        },
+        "theft_confirmed": {
+          "count": 2,
+          "total": 2,
+          "rate": 1.0
+        },
+        "banking_apps_present": {
+          "count": 1,
+          "total": 1,
+          "rate": 1.0
+        },
+        "device_locked": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        },
+        "sim_blocked": {
+          "count": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "missing_fields_accuracy": {
+        "count": 2,
+        "total": 2,
+        "rate": 1.0
+      },
+      "stolen_classified_lost_or_uncertain": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "stolen_classified_lost_or_uncertain_ids": [],
+      "by_language": {
+        "english": {
+          "cases": 2,
+          "valid_output": {
+            "count": 2,
+            "total": 2,
+            "rate": 1.0
+          },
+          "classification_accuracy": {
+            "count": 2,
+            "total": 2,
+            "rate": 1.0
+          },
+          "field_extraction_accuracy": {
+            "count": 8,
+            "total": 8,
+            "rate": 1.0
+          }
+        }
+      },
+      "misclassified": [],
+      "unsupported_inference_case_rate": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "unsupported_inference_cases_invalid": 0,
+      "unsupported_inference_field_rate": {
+        "count": 0,
+        "total": 6,
+        "rate": 0.0
+      },
+      "unsupported_inference_count": 0,
+      "grounding_violations": {
+        "bad_evidence": 0,
+        "facts_without_evidence": 0
+      },
+      "ambiguous_lenient": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      },
+      "ambiguous_strict": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      },
+      "ambiguous_confident_wrong": 0,
+      "uncertain_on_non_uncertain_cases": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "parser_level_injection_resistance": {
+        "count": 0,
+        "total": 0,
+        "rate": null
+      }
+    },
+    "integration": {
+      "stolen_cases_without_tasks": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "stolen_cases_without_tasks_ids": [],
+      "stolen_cases_intake_failed": {
+        "count": 0,
+        "total": 2,
+        "rate": 0.0
+      },
+      "stolen_cases_intake_failed_ids": [],
+      "workflow_errors": 0,
+      "parser_warning_counts": {
+        "removed a Markdown code fence around the JSON": 2
+      },
+      "out_of_spain": [
+        {
+          "case_id": "IC-040",
+          "input": "My phone was stolen in Lisbon yesterday.",
+          "case_type": "stolen_phone",
+          "location": "Lisbon",
+          "workflow_task_ids": [
+            "stolen_phone_es_01"
+          ]
+        }
+      ]
+    }
+  }
+}

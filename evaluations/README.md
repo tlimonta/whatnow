@@ -7,7 +7,7 @@ This folder holds the labelled datasets used to evaluate WhatNow's AI intake par
 | `intake_cases.json` | Edoardo (AI-01) | 40 labelled single-message intake cases for comparing prompts V1, V2 and V3 |
 | `adversarial_cases.json` | Marta (QA-01) | 22 adversarial / threat-linked cases (injection, sycophancy, sensitive data, updates) |
 
-**No results exist yet.** No prompt has been run against either dataset. Benchmark numbers will be produced only in a later phase, once a parser is integrated, and recorded in `documentation/failure_mode_results.md` as described in `documentation/evaluation_plan.md`. Any number that appears before then is invented.
+**Results:** `intake_cases.json` was run against V1, V2 and V3 on `claude-haiku-4-5` on 2026-09-30. Results are in `documentation/evaluation_results.md`, failures in `documentation/failures.md`, and raw outputs in `outputs/evaluations/`. `adversarial_cases.json` is part of Marta's system-level evaluation (`documentation/failure_mode_results.md`) and was not run by this benchmark.
 
 ## `intake_cases.json` structure
 

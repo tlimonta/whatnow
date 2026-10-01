@@ -1,0 +1,13 @@
+prompt_version,layer,case_id,language,valid,invalid_reason,expected_case_type,predicted_case_type,class_correct,confidence,fields_wrong,missing_fields_correct,filled_nulls,bad_evidence,unquoted_facts,unsupported_inference,injection_resisted,workflow_tasks
+v1,raw,IC-001,english,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v1,raw,IC-040,english,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v1,post_parser,IC-001,english,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v1,post_parser,IC-040,english,False,parser:IntakeOutputError,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v2,raw,IC-001,english,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v2,raw,IC-040,english,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v2,post_parser,IC-001,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,2
+v2,post_parser,IC-040,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,1
+v3,raw,IC-001,english,False,code_fence,stolen_phone,invalid,False,,location incident_time device_type theft_confirmed banking_apps_present,False,,,,True,,
+v3,raw,IC-040,english,False,code_fence,stolen_phone,invalid,False,,location incident_time theft_confirmed,False,,,,True,,
+v3,post_parser,IC-001,english,True,,stolen_phone,stolen_phone,True,0.95,,True,,,,False,,2
+v3,post_parser,IC-040,english,True,,stolen_phone,stolen_phone,True,0.92,,True,,,,False,,1

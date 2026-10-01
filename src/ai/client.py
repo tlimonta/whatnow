@@ -12,6 +12,7 @@ MODEL_ENV = "WHATNOW_LLM_MODEL"
 # Cheapest current Claude model; enough for single-message classification/extraction.
 # If the Phase 3 benchmark shows it is too weak, try claude-sonnet-5-5 via WHATNOW_LLM_MODEL.
 DEFAULT_MODEL = "claude-haiku-4-5"
+MAX_TOKENS = 2048
 
 
 class LLMClient(Protocol):
@@ -51,10 +52,11 @@ class AnthropicClient:
         anthropic = self._anthropic
         try:
             # No thinking or effort settings: Haiku 4.5 rejects `effort`, and the
-            # output is one short JSON object.
+            # output is one short JSON object. No temperature either: anthropic SDK 1.x
+            # does not accept sampling parameters, so the provider default is used.
             response = self._client.messages.create(
                 model=self.model,
-                max_tokens=2048,
+                max_tokens=MAX_TOKENS,
                 messages=[{"role": "user", "content": prompt}],
             )
         except anthropic.APITimeoutError as exc:

@@ -256,3 +256,66 @@ No real model was called. No benchmark numbers exist.
 Asked to switch the default model from claude-opus-5-5 to claude-haiku-4-5 to reduce cost.
 
 **Notes:**
+
+---
+
+## Phase E3: Prompt benchmark and failure analysis
+
+### Date
+2026-09-30
+
+### Tool / model / mode
+Claude Code (VS Code extension), model Claude Opus 5.5, on branch `test/prompt-benchmark`. The AI created/edited files and ran tests and a mock benchmark. It did not stage, commit, push or make any paid API call.
+
+### Dependency check
+PR #10 (my parser) and PR #11 (Tommaso's end-to-end integration) were merged into `main` before starting.
+
+### What the AI generated
+- `src/evaluation/metrics.py`: pure scoring functions that implement `prompt_strategy.md` §4 exactly (strict raw validation, value matching, unsupported inference (a)/(b)/(c), ambiguous lenient/strict/confident-wrong, parser-level injection resistance, aggregation).
+- `src/evaluation/run_benchmark.py`: CLI. Dry run by default (call count and rough cost, no calls); `--mock` for a free fake client; real calls only with `--run`. Options `--limit`, `--ids`, `--versions`, `--model`, `--raw-delimiters`. Records are written after every call. A configuration error (e.g. bad key) stops the run at the first call.
+- `src/ai/parser.py`: new public `parse_output()` so the same answer is scored before and after the parser rules, from one paid call. `parse()` behaviour is unchanged.
+- `src/ai/client.py`: a `MAX_TOKENS` constant, so the benchmark can record it. (An optional `temperature` was added first and then removed; see Problems encountered.)
+- `tests/evaluation/` (48 tests) and 1 new test in `tests/ai/`.
+- After Tommaso's Phase E3 guidance (shared via the group), added: `missing_fields` accuracy, stolen cases classified lost/uncertain (with ids), per-language breakdown, parser warning counts, misclassified-case list, and the integration outcome (task ids from the merged `CaseService` + workflow engine, run locally), including the IC-040 Lisbon case. The request was checked point by point against the existing harness; backend, workflow data, frontend, `Case` and prompts were not modified, as he asked. His suggested tool was Codex (GPT-5.6 Sol, High); this work was done in Claude Code instead.
+- `documentation/evaluation_results.md`: metrics, layers, how to run, output files, cost control. Results section left empty.
+
+### Decisions proposed by the AI (need human confirmation)
+- **Two layers from one call:** raw (compares prompts) and post-parser (what the app stores).
+- **Provider errors count as invalid** outputs, with reason `provider_error`, so no case disappears from a denominator.
+- **Injection `must_not` is only partly automated** (URLs, copied confidence 1.0); the rest is a manual read.
+- **Results file naming:** results go in `evaluation_results.md` and `failures.md` as the Phase E3 guide says; `failure_mode_results.md` stays Marta's system-level file.
+- **No temperature setting:** the provider default is used and recorded as such in `metadata.json`.
+- Marta's `adversarial_cases.json` is not run by this tool (different format, system-level metric).
+
+### Checks run
+- `src/backend/.venv/bin/python -m pytest tests -q -p no:cacheprovider`: 194 passed (145 before + 49 new) after removing the temperature option, adding `--rescore` and fixing the git-status bug. `git diff --check`: clean.
+- Dry run: 120 calls, about 94,000 input tokens, rough cost about $0.33 on `claude-haiku-4-5` (about $0.67 on `claude-sonnet-5-5`). This is an estimate, not a measurement.
+- Mock run over all 40 cases × 3 versions, written to a scratch folder outside the repository: all 5 output files produced. The mock always answers "uncertain, nothing known", and the scores behave as expected (6/40 classification = the 6 uncertain cases; uncertain on 34/34 other cases). These numbers are not results.
+
+### Problems encountered
+- **AI error found by the first real smoke test:** the AI had added a `temperature` option (0 by default in the benchmark) for reproducibility. The first `--run` on `IC-001,IC-040` crashed with `TypeError: Messages.create() got an unexpected keyword argument 'temperature'`: anthropic SDK 1.x has no sampling parameters. The unit tests missed it because they use fake clients that accept any argument. The error happened before any request was sent, so there was no cost. Fix: the option was removed from the client, the benchmark and the docs rather than forced through `extra_body`, and the empty output folder was deleted. Lesson: fakes cannot catch SDK signature changes; only a small real smoke test does.
+- **First successful real smoke test** (`--run --ids IC-001,IC-040`, 6 calls, estimated about $0.02): run folder `outputs/evaluations/20260930T201543Z_claude-haiku-4-5`. The AI read every raw output to check the scoring before the full run. What it showed: Haiku wraps every answer in a ```json code fence even though V2/V3 forbid it (raw valid 0/2 for every version; the parser strips it); V1 invents its own keys (`"stolen"`, `"unknown"` strings, an `additional_notes` field with advice); V2/V3 classify IC-040 as `stolen_phone` with location `Lisbon`, and the integration gives it the Spanish police-report task `stolen_phone_es_01`. Two misleading summary lines were then fixed and the run was re-scored with the new `--rescore` option (no new calls): failed intake is now reported separately from "saved without tasks", and the summary states how many unsupported-inference cases count only because the output is invalid. The dirty flag became a list of uncommitted files (excluding `outputs/`); this run predates it, so its list shows "(not recorded)" (the only uncommitted file at the time was this log).
+- `.env.example` showed as deleted after `.env` was created (probably renamed instead of copied). It was restored with `git restore .env.example`; `.env` stays untracked.
+
+- **Metadata bug found in the full run:** `git_dirty_files` showed `ocumentation/ai_logs/edoardo.md` because `str.strip()` removed the leading space of the first `git status --porcelain` line. Fixed (`rstrip("\n")`, with a test). The full run's `metadata.json` was corrected by hand, and the correction is recorded in its `metadata_note` field; no other value was changed.
+
+### Results (real run, 2026-09-30)
+- Run: `outputs/evaluations/20260930T202122Z_claude-haiku-4-5/`, 120 calls, 0 provider errors, commit `2bd15bc` (only this log uncommitted). Estimated cost about $0.33 (not checked in the console).
+- Headline after parser, V1 / V2 / V3: valid 0 / 39 / 40 of 40; classification 0 / 38 / 40; field extraction 0 / 100 / 101 of 102; unsupported-inference cases 40 / 12 / 7; ambiguous (lenient) 0 / 3 / 6 of 6; injections that actually succeeded (manual read) 1 / 0 / 0 of 5.
+- Raw output: 0/120 valid, all because of a Markdown code fence.
+- Stolen cases classified lost/uncertain: 0/19 for every version. The 6 uncertain cases (3 of them theft-possible) get no tasks by design. IC-040 (Lisbon) gets the Spanish police-report task.
+- Decision: keep V3. Remaining V3 failures: code fence, `theft_confirmed: false` from "I lost" (4), guesses stored as facts (4). Documented in `documentation/evaluation_results.md` and `documentation/failures.md`, not fixed; a fix would be a new prompt version.
+- How the AI analysed them: it read every failing V2/V3 record and every injection record (including V1), and scanned all 120 raw outputs for text outside the JSON and phone-number patterns. That scan found V1 IC-029's "call 091" and V1 IC-033's advice, which the automatic metric could not see.
+
+### Human review: TO BE COMPLETED BY EDOARDO
+- [x] Can explain each metric formula and the raw vs post-parser layers
+- [x] Ran the tests and a dry run myself
+- [x] Confirmed cost and credentials before any `--run`
+- [x] Read `records.jsonl` for the 5 injection cases myself (the AI's reading is above)
+- [x] Checked the examples in `failures.md` against `records.jsonl`
+- [x] Agree with the decision to keep V3 and not fix the prompt in this phase
+- [x] Reviewed `git diff` before committing
+
+**Changes made by human:**
+
+**Notes:**
