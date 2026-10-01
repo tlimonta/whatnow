@@ -49,7 +49,6 @@ textarea::placeholder { color: #667b76; }
 .view-intro h1 { margin-bottom: 10px; }
 .view-intro p { color: #465e5a; margin: 0; }
 .section-heading { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
-.demo-tag { display: inline-block; flex: none; border: 1px solid #aac9be; background: #edf6f1; color: #265a4d; border-radius: 999px; padding: 5px 11px; font-size: .78rem; font-weight: 750; }
 .case-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 25px 0; }
 .case-meta > div { border: 1px solid #dfe9e5; border-radius: 12px; background: #f8fbf9; padding: 16px; }
 .case-meta span, .case-meta strong { display: block; }
@@ -102,3 +101,12 @@ progress::-moz-progress-bar { background: #327969; }
   .section-heading { align-items: start; flex-direction: column; }
   .task-topline { flex-wrap: wrap; }
 }
+
+button:disabled { cursor: wait; opacity: .65; }
+textarea:disabled { opacity: .8; }
+.status-completed { background: #dceee8; color: #214f46; }
+.status-skipped { background: #eee9f5; color: #594274; }
+.task-card .form-error { color: #8a322e; }
+.task-card .secondary-button + .secondary-button { margin-left: 10px; }
+.source-area, .fact-list, .case-meta, .eyebrow, .task-card { overflow-wrap: anywhere; }
+.fact-list dt, .fact-list dd { min-width: 0; }
