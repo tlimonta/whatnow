@@ -2,7 +2,7 @@
 
 ## Scope and method
 
-Audit date: 2026-10-01. Branch: `docs/source-audit`. The audit was read-only against `data/workflows/stolen_phone_es.json` and `data/sources/stolen_phone_es.json`; no files under `src/` or `tests/` were modified.
+Audit date: 2026-10-01. Branch: `docs/source-audit`. The audit inspected `data/workflows/stolen_phone_es.json` and `data/sources/stolen_phone_es.json`; the Yoigo source URL was corrected to its canonical form as part of this audit, and no files under `src/` or `tests/` were modified.
 
 The workflow contains nine user-visible actions. Each action was checked against its `source_id`, the corresponding source record, the source authority and domain, the wording of the action, the device/carrier condition, and the `last_verified` date. The linked pages were checked on 2026-10-01 where possible.
 
@@ -14,7 +14,7 @@ The workflow contains nine user-visible actions. Each action was checked against
 | `stolen_phone_es_02_movistar` | `movistar_bloqueo_linea_robo` | Movistar Spain | 2026-09-27 | PASS | The official page supports suspending the line from the Mi Movistar customer area after theft or loss. The condition correctly limits it to Movistar lines. |
 | `stolen_phone_es_03_vodafone` | `vodafone_robo_perdida_dispositivo` | Vodafone España | 2026-09-27 | PASS | The current particulares page supports blocking the SIM and suspending the line through a Vodafone shop, plus requesting a replacement SIM. The action does not incorrectly claim a universal IMEI block. |
 | `stolen_phone_es_04_orange` | `orange_robo_perdida_movil` | Orange España | 2026-09-27 | PASS | The official Orange page supports blocking the SIM through Mi Orange, customer support, or a shop. The carrier condition is explicit. |
-| `stolen_phone_es_05_yoigo` | `yoigo_robo_perdida_movil` | Yoigo Spain | 2026-09-27 | PASS | Yoigo's official help result supports temporary SIM blocking through Mi Yoigo and replacement-SIM handling. The exact URL includes a search parameter and should be checked manually against the canonical page before release. |
+| `stolen_phone_es_05_yoigo` | `yoigo_robo_perdida_movil` | Yoigo Spain | 2026-09-27 | PASS | Yoigo's official help result supports temporary SIM blocking through Mi Yoigo and replacement-SIM handling. The canonical URL has already been applied in this PR. |
 | `stolen_phone_es_06_apple` | `apple_robo_iphone_ipad` | Apple Support España | 2026-09-27 | PASS | The action is correctly conditional on iPhone/iPad and Buscar being enabled. Apple supports marking the device lost, remote erase, the irreversible-erase warning, and retaining Activation Lock. |
 | `stolen_phone_es_07_android` | `google_android_perdido` | Google/Android official support | 2026-09-27 | PASS | The action is correctly Android-specific. Google supports Localizador, the listed battery/connectivity/account/visibility prerequisites, remote lost mode, erase, and the loss of location availability after erasure. |
 | `stolen_phone_es_08_bank` | `bde_uso_fraudulento_tarjeta` | Banco de España | 2026-09-27 | REVIEW | Banco de España supports physical payment-card fraud: prompt notification, card blocking, police report, and transaction review. It does not establish a universal procedure for banking apps or providers such as Revolut. The workflow wording should be narrowed or supplemented with provider-specific official sources. |
@@ -43,10 +43,10 @@ The workflow contains nine user-visible actions. Each action was checked against
 
 ## What Gregorio must manually verify
 
-- Decide whether to reference `policia_nacional_ovd` from the workflow action or remove it from the source registry. This audit did not modify workflow or source JSON because the permitted edit scope was documentation only.
+- Decide whether to reference `policia_nacional_ovd` from the workflow action or remove it from the source registry. This audit modified the source JSON only to correct the Yoigo URL to its canonical form; workflow JSON was not modified.
 - Narrow the banking action to payment-card exposure or add official sources for each supported banking/payment provider. Do not present Banco de España as a universal banking-app procedure.
 - If the workflow is later extended beyond AppleCare+, add official Spain-applicable sources for additional manufacturers or insurers.
-- Open the canonical Yoigo URL and confirm the page remains current before a future data update.
+- Recheck the canonical Yoigo page remains current before a future data update.
 - Recheck carrier menus, identity checks, replacement-SIM rules, and source pages immediately before committing or releasing the workflow.
 
 ## Audit conclusion

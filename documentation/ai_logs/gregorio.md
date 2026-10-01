@@ -51,7 +51,7 @@ OpenAI Codex, default collaboration mode, with local repository inspection and w
 
 ### Task
 
-Audit the live stolen-phone workflow and source registry for source coverage, traceability, authority, Spain applicability, device-specific conditions, URL quality, duplicates, unused records, and recent verification dates. Do not modify `src/`, `tests/`, workflow JSON, source JSON, or other members' AI logs; do not commit, push, create, or switch branches.
+Audit the live stolen-phone workflow and source registry for source coverage, traceability, authority, Spain applicability, device-specific conditions, URL quality, duplicates, unused records, and recent verification dates. Do not modify `src/`, `tests/`, workflow JSON, or other members' AI logs; correct the Yoigo source URL to its canonical form if needed; do not commit, push, create, or switch branches.
 
 ### Prompt/context supplied
 
@@ -60,20 +60,21 @@ Gregorio Cerini owns verified sources, workflow data, and source-quality audit o
 ### Output used
 
 - Created `documentation/research/source_audit.md` with the required action/source/status table, structural checks, issues, and manual verification checklist.
+- Corrected the Yoigo source URL to its canonical form in `data/sources/stolen_phone_es.json`.
 - Updated the Vodafone URL and customer-segment description in `documentation/data_sources.md`.
 - Clarified that the Banco de España source covers physical payment-card fraud, not general banking-app procedures, and that provider-specific apps require direct provider contact.
 - Added this audit-session entry to `documentation/ai_logs/gregorio.md`.
 
 ### Human verification needed
 
-Gregorio must decide how to handle the unused `policia_nacional_ovd` source, narrow or expand the generic banking step, and narrow or expand the generic manufacturer step. He must also verify AppleCare+ availability in Spain, the canonical Yoigo URL, and current carrier procedures before committing.
+Gregorio must decide how to handle the unused `policia_nacional_ovd` source and narrow or expand the generic banking step. The Yoigo URL was corrected to canonical form, and AppleCare+ with Theft and Loss was confirmed available in Spain via official sources. Current carrier procedures still require review before committing.
 
 ### Problems encountered
 
 - The workflow references the main Policía Nacional denunciation page but not the separate Oficina Virtual de Denuncias source, even though the action mentions online eligibility.
 - The Banco de España source is authoritative but limited to physical payment-card fraud and related unauthorized transactions; it does not support a universal banking-app procedure.
 - The manufacturer action is generic while the evidence is Apple-specific.
-- The Yoigo page is official and discoverable, but direct retrieval of the parameterized URL was less reliable than the canonical help-page result.
+- The Yoigo URL was verified and corrected from the parameterized form to the canonical help-page URL.
 
 ### Lesson learned
 
