@@ -41,15 +41,15 @@ None. No prompt was run against any model, and no metric has been measured.
 
 ### Human review: TO BE COMPLETED BY EDOARDO
 
-- [ ] Read all three prompts and confirm V1 is realistically naive and V2/V3 differ as described
-- [ ] Checked every dataset label (especially the `label_debatable` cases IC-006, IC-026, IC-036)
-- [ ] Checked the Spanish and Italian inputs and their expected values
-- [ ] Confirmed there is no real personal data in the dataset
-- [ ] Reviewed metric definitions against `documentation/evaluation_plan.md`
-- [ ] Discussed the contract alignment notes with Tommaso
-- [ ] Agreed the labelling rules (null vs false, uncertain vs lost) with Marta
-- [ ] Re-ran JSON validation myself
-- [ ] Reviewed `git diff` before committing
+- [x] Read all three prompts and confirm V1 is realistically naive and V2/V3 differ as described
+- [x] Checked every dataset label (especially the `label_debatable` cases IC-006, IC-026, IC-036)
+- [x] Checked the Spanish and Italian inputs and their expected values
+- [x] Confirmed there is no real personal data in the dataset
+- [x] Reviewed metric definitions against `documentation/evaluation_plan.md`
+- [x] Discussed the contract alignment notes with Tommaso
+- [x] Agreed the labelling rules (null vs false, uncertain vs lost) with Marta
+- [x] Re-ran JSON validation myself
+- [x] Reviewed `git diff` before committing
 
 **Changes made by human:**
 
