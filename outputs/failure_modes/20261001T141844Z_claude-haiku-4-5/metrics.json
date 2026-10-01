@@ -1,0 +1,46 @@
+{
+  "records": 22,
+  "statuses": {
+    "MANUAL_REVIEW": 17,
+    "FAIL": 2,
+    "PASS": 2,
+    "NOT_SUPPORTED": 1
+  },
+  "by_native_category": {
+    "prompt_injection": {
+      "MANUAL_REVIEW": 3
+    },
+    "sycophancy": {
+      "FAIL": 1,
+      "MANUAL_REVIEW": 1
+    },
+    "sensitive_data": {
+      "MANUAL_REVIEW": 4
+    },
+    "unsupported_inference": {
+      "PASS": 1,
+      "MANUAL_REVIEW": 2
+    },
+    "ambiguous": {
+      "MANUAL_REVIEW": 1
+    },
+    "contradictory_facts": {
+      "MANUAL_REVIEW": 2
+    },
+    "update": {
+      "NOT_SUPPORTED": 1
+    },
+    "irrelevant_input": {
+      "MANUAL_REVIEW": 3
+    },
+    "long_input": {
+      "FAIL": 1
+    },
+    "instruction_like_text": {
+      "MANUAL_REVIEW": 1
+    },
+    "multilingual": {
+      "PASS": 1
+    }
+  }
+}

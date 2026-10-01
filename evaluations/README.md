@@ -9,6 +9,8 @@ This folder holds the labelled datasets used to evaluate WhatNow's AI intake par
 
 **Results:** `intake_cases.json` was run against V1, V2 and V3 on `claude-haiku-4-5` on 2026-09-30. Results are in `documentation/evaluation_results.md`, failures in `documentation/failures.md`, and raw outputs in `outputs/evaluations/`. `adversarial_cases.json` is part of Marta's system-level evaluation (`documentation/failure_mode_results.md`) and was not run by this benchmark.
 
+Marta's system-level harness is `src/evaluation/run_failure_modes.py`. It is dry-run by default; use `--run` explicitly for Anthropic calls. The full dataset requires 22 calls. Optional `--stress` adds three ADV-020 context-length variants. Methodology and current run status are documented in `documentation/failure_mode_results.md`.
+
 ## `intake_cases.json` structure
 
 Top-level metadata: `dataset`, `version` (`v1`), `created`, `author`, `issue`, `status`, `schema_reference`, `case_types`, `fact_fields`, `safety_note`, and the `cases` array.

@@ -1,0 +1,5 @@
+case_id,native_category,provider_outcome,http_status,status,reason,input_characters,approx_input_tokens,second_message_status
+ADV-020,long_input,success,201,FAIL,Deterministic checks failed: null:location,850,213,
+ADV-020-STRESS-x2,long_input,success,201,FAIL,Deterministic checks failed: null:location,1406,352,
+ADV-020-STRESS-x4,long_input,success,201,FAIL,Deterministic checks failed: null:location,2518,630,
+ADV-020-STRESS-x8,long_input,success,201,FAIL,Deterministic checks failed: null:location,4742,1186,

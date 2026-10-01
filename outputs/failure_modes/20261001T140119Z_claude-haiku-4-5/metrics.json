@@ -1,0 +1,14 @@
+{
+  "records": 2,
+  "statuses": {
+    "MANUAL_REVIEW": 2
+  },
+  "by_native_category": {
+    "prompt_injection": {
+      "MANUAL_REVIEW": 1
+    },
+    "irrelevant_input": {
+      "MANUAL_REVIEW": 1
+    }
+  }
+}

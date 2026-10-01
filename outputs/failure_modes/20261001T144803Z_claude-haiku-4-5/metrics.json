@@ -1,0 +1,11 @@
+{
+  "records": 4,
+  "statuses": {
+    "FAIL": 4
+  },
+  "by_native_category": {
+    "long_input": {
+      "FAIL": 4
+    }
+  }
+}

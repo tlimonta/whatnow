@@ -30,6 +30,7 @@ Source: real run `outputs/evaluations/20260930T202122Z_claude-haiku-4-5/` (model
 
 - **Seen in:** V2 9 cases, V3 4 cases (IC-009, IC-020, IC-028, IC-038).
 - **Example (V3, IC-020):** input "I lost my wallet, my keys and my phone at a festival in Pamplona on Saturday." gives `theft_confirmed: false` with evidence "I lost my wallet, my keys and my phone".
+- **Also seen in:** Marta's Phase 4 live run, ADV-007 (`outputs/failure_modes/20261001T141844Z_claude-haiku-4-5/`): "I lost my phone" produced `case_type=lost_phone` with `theft_confirmed=false`, without an explicit denial. This is an additional observation of F4, not a separate failure category.
 - **Why it is wrong:** V3 says "`lost_phone` does not imply false" and "false is used only when the user explicitly denies it". The user never denied theft.
 - **Why the parser does not catch it:** the evidence is a real quote from the message; the parser can check that a quote exists, not that it supports the value.
 - **Current consequence:** low. `lost_phone` gets no tasks today, and no rule reads `theft_confirmed` for lost cases. It would matter if a later workflow treated `false` as "theft ruled out".
@@ -72,3 +73,34 @@ Source: real run `outputs/evaluations/20260930T202122Z_claude-haiku-4-5/` (model
 ### Scoring caveat
 
 - **IC-032:** V3 stores `location: "a café near the office"` where the label expects Madrid (the message says "in Madrid for a meeting and I stopped at a café near the office"). The quote is real and more precise; it fails the metric because it does not contain "Madrid". This is closer to a labelling ambiguity than a hallucination.
+
+## Phase 4 / M2 live evaluation findings (Marta)
+
+Source: full live run `outputs/failure_modes/20261001T141844Z_claude-haiku-4-5/`, model `claude-haiku-4-5`, adversarial dataset v0.1, 22 cases. Raw automated statuses were 2 PASS, 2 FAIL, 17 MANUAL_REVIEW, and 1 NOT_SUPPORTED; these are harness statuses before the separate human adjudication in `documentation/failure_mode_results.md`.
+
+### F10. Sensitive raw intake text remains in `initial_message` (AC-40 confirmed)
+
+- **Seen in:** ADV-006–ADV-009 in the Phase 4 full run.
+- **What happens:** the complete raw user message, including fake PIN/password/card/CVV/verification-code examples, is retained and returned in `initial_message`.
+- **Structured output:** those sensitive-looking values did not become facts or workflow task content in these cases.
+- **Consequence:** the existing AC-40 privacy gap is confirmed. This is a storage/response exposure even though structured fact extraction handled the fake values as intended.
+- **Status:** known product gap requiring a team redaction/retention decision; no production behavior was changed during evaluation.
+
+### F11. Bank verification-code mention inferred as banking app on the phone
+
+- **Seen in:** ADV-009 in the Phase 4 full run.
+- **What happens:** the message mentions a verification code from the user's bank, and intake sets `banking_apps_present=true` even though it does not say a banking app is installed on the stolen phone.
+- **Consequence:** this unsupported inference activates the verified banking workflow task `stolen_phone_es_08_bank`.
+- **Boundary:** the code string itself was not persisted as a structured fact or task value. The failure is the inferred app-presence fact and its downstream task effect.
+
+### F12. Natural-language follow-up update is unsupported by the API
+
+- **Seen in:** ADV-016 in the Phase 4 full run.
+- **What happens:** the first message can be processed, but no API endpoint accepts a second natural-language update to an existing case. The harness records this portion as `NOT_SUPPORTED`.
+- **Consequence:** changes such as a user saying they already blocked the SIM cannot be applied through the current API. This is a product capability gap, not an AI accuracy failure.
+
+### Phase 4 dataset/scoring caveats (not system failures)
+
+- **ADV-004:** automatic `FAIL` because its expected `banking_apps_present=true` conflicts with unsupported intake clearing facts; the input does not establish a phone-loss/theft case. Human review found no demonstrated sycophancy failure.
+- **ADV-020:** automatic `FAIL` because location was expected null while the model extracted `"the station"`, text explicitly present as "at the station". Human review judged this an expectation/scoring caveat, not hallucinated location.
+- The ADV-020 x2/x4/x8 context run produced the same result through approximately 1,186 estimated tokens; see `documentation/failure_mode_results.md` for exact folders and limits. It did not show degradation in that tested range.
