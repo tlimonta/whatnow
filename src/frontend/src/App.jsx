@@ -3,54 +3,91 @@ import IntakeForm from './components/IntakeForm.jsx';
 import CaseSummary from './components/CaseSummary.jsx';
 import ProgressBar from './components/ProgressBar.jsx';
 import TaskCard from './components/TaskCard.jsx';
-import { mockCase, mockTaskPresentation } from './mockData.js';
+import { createCase, updateTaskStatus } from './api.js';
 
 export default function App() {
-  const [submittedDescription, setSubmittedDescription] = useState(null);
-  const [tasks, setTasks] = useState(() => mockCase.tasks.map((task) => ({ ...task })));
+  const [caseData, setCaseData] = useState(null);
+  const [creating, setCreating] = useState(false);
+  const [creationError, setCreationError] = useState('');
+  const [savingTaskId, setSavingTaskId] = useState(null);
+  const [taskError, setTaskError] = useState(null);
+  const [announcement, setAnnouncement] = useState('');
+  const requestInFlight = useRef(false);
   const caseHeading = useRef(null);
+  const intakeHeading = useRef(null);
+  const caseId = caseData?.id;
 
   useEffect(() => {
-    if (submittedDescription !== null) caseHeading.current?.focus();
-  }, [submittedDescription]);
+    if (caseId) caseHeading.current?.focus();
+    else intakeHeading.current?.focus();
+  }, [caseId]);
 
-  function toggleTask(id) {
-    setTasks((current) => current.map((task) => task.id === id
-      ? { ...task, status: task.status === 'completed' ? 'pending' : 'completed' }
-      : task));
+  async function submitCase(message) {
+    if (requestInFlight.current) return;
+    requestInFlight.current = true;
+    setCreating(true);
+    setCreationError('');
+    try {
+      setCaseData(await createCase(message));
+    } catch (error) {
+      setCreationError(error.message);
+    } finally {
+      requestInFlight.current = false;
+      setCreating(false);
+    }
+  }
+
+  async function changeTaskStatus(taskId, status) {
+    if (requestInFlight.current) return;
+    requestInFlight.current = true;
+    setSavingTaskId(taskId);
+    setTaskError(null);
+    setAnnouncement('');
+    try {
+      setCaseData(await updateTaskStatus(caseData.id, taskId, status));
+      setAnnouncement('Task status saved.');
+    } catch (error) {
+      setTaskError({ id: taskId, message: `${error.message} Showing the last confirmed case state.` });
+    } finally {
+      requestInFlight.current = false;
+      setSavingTaskId(null);
+    }
   }
 
   function returnToIntake() {
-    setSubmittedDescription(null);
-    setTasks(mockCase.tasks.map((task) => ({ ...task })));
+    if (requestInFlight.current) return;
+    setCaseData(null);
+    setTaskError(null);
+    setCreationError('');
+    setAnnouncement('');
   }
 
   return (
     <div className="app-shell">
       <header className="site-header">
         <div className="brand"><span className="brand-mark" aria-hidden="true">✳</span><span>WhatNow</span></div>
-        <span className="header-label">Phase 1 prototype</span>
+        <span className="header-label">Your next steps</span>
       </header>
       <main id="main-content">
-        {submittedDescription === null ? (
-          <IntakeForm onSubmit={setSubmittedDescription} />
+        {!caseData ? (
+          <IntakeForm onSubmit={submitCase} loading={creating} error={creationError} headingRef={intakeHeading} />
         ) : (
           <div className="case-view">
             <div className="view-intro">
-              <div><div className="eyebrow">A sample of what comes next</div><h1 ref={caseHeading} tabIndex="-1">Make sense of the next steps.</h1><p>This page uses local mock data. It is not personalized advice or verified procedural guidance.</p></div>
-              <button className="text-button" type="button" onClick={returnToIntake}>← Start again</button>
+              <div><div className="eyebrow">Your case</div><h1 ref={caseHeading} tabIndex="-1">Make sense of the next steps.</h1><p>Review the facts and available actions for your case.</p></div>
+              <button className="text-button" type="button" disabled={savingTaskId !== null} onClick={returnToIntake}>← Start again</button>
             </div>
-            <CaseSummary caseData={mockCase} submittedDescription={submittedDescription} />
+            <CaseSummary caseData={caseData} />
             <section className="panel" aria-labelledby="plan-heading">
-              <div className="section-heading"><div><div className="eyebrow">Demonstration only</div><h2 id="plan-heading">Action plan preview</h2></div><span className="demo-tag">Mock tasks</span></div>
-              <p className="muted">These cards demonstrate the interface. They are not Spain procedures, official instructions, or a personalized plan.</p>
-              <ProgressBar tasks={tasks} />
-              <div className="task-list">{tasks.map((task) => <TaskCard key={task.id} task={task} presentation={mockTaskPresentation[task.id]} onToggle={toggleTask} />)}</div>
+              <div className="section-heading"><h2 id="plan-heading">Action plan</h2></div>
+              <ProgressBar tasks={caseData.tasks} />
+              <p role="status" className="muted">{savingTaskId !== null ? 'Saving task status… Other task controls are paused until saving finishes.' : announcement}</p>
+              <div className="task-list">{caseData.tasks.map((task) => <TaskCard key={task.id} task={task} onStatusChange={changeTaskStatus} saving={savingTaskId === task.id} disabled={savingTaskId !== null} error={taskError?.id === task.id ? taskError.message : ''} />)}</div>
             </section>
           </div>
         )}
       </main>
-      <footer className="site-footer">WhatNow · Frontend demonstration · No backend or AI connection</footer>
+      <footer className="site-footer">WhatNow · Facts, open questions, and next steps</footer>
     </div>
   );
 }
