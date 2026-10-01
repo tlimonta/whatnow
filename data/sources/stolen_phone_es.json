@@ -44,7 +44,7 @@
     {
       "id": "yoigo_robo_perdida_movil",
       "name": "Yoigo — Me han robado el móvil o lo he perdido",
-      "url": "https://www.yoigo.com/ayuda/me-han-robado-el-movil-o-lo-he-perdido?helpSearch=numero",
+      "url": "https://www.yoigo.com/ayuda/me-han-robado-el-movil-o-lo-he-perdido",
       "description": "Official Yoigo guidance to block a SIM temporarily through Mi Yoigo and obtain a replacement SIM after loss or theft.",
       "type": "carrier",
       "last_verified": "2026-09-27"

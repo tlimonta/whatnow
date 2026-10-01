@@ -38,3 +38,44 @@ Gregorio must open the linked pages and confirm current procedures, especially V
 ## Lesson learned
 
 Keep authoritative actions narrow and source-linked. When a source supports only a related security action, encode the step as conditional and document the boundary instead of filling the gap with plausible but unverified instructions.
+
+## Session: 2026-10-01 — Source-quality audit
+
+### Date
+
+2026-10-01
+
+### Tool/model/mode
+
+OpenAI Codex, default collaboration mode, with local repository inspection and web verification of official source pages.
+
+### Task
+
+Audit the live stolen-phone workflow and source registry for source coverage, traceability, authority, Spain applicability, device-specific conditions, URL quality, duplicates, unused records, and recent verification dates. Do not modify `src/`, `tests/`, workflow JSON, or other members' AI logs; correct the Yoigo source URL to its canonical form if needed; do not commit, push, create, or switch branches.
+
+### Prompt/context supplied
+
+Gregorio Cerini owns verified sources, workflow data, and source-quality audit on branch `docs/source-audit`. The permitted outputs were `documentation/research/source_audit.md`, an update to `documentation/data_sources.md` if needed, and this log entry. The workflow contained nine user-visible actions and the source registry contained nine records.
+
+### Output used
+
+- Created `documentation/research/source_audit.md` with the required action/source/status table, structural checks, issues, and manual verification checklist.
+- Corrected the Yoigo source URL to its canonical form in `data/sources/stolen_phone_es.json`.
+- Updated the Vodafone URL and customer-segment description in `documentation/data_sources.md`.
+- Clarified that the Banco de España source covers physical payment-card fraud, not general banking-app procedures, and that provider-specific apps require direct provider contact.
+- Added this audit-session entry to `documentation/ai_logs/gregorio.md`.
+
+### Human verification needed
+
+Gregorio must decide how to handle the unused `policia_nacional_ovd` source and narrow or expand the generic banking step. The Yoigo URL was corrected to canonical form, and AppleCare+ with Theft and Loss was confirmed available in Spain via official sources. Current carrier procedures still require review before committing.
+
+### Problems encountered
+
+- The workflow references the main Policía Nacional denunciation page but not the separate Oficina Virtual de Denuncias source, even though the action mentions online eligibility.
+- The Banco de España source is authoritative but limited to physical payment-card fraud and related unauthorized transactions; it does not support a universal banking-app procedure.
+- The manufacturer action is generic while the evidence is Apple-specific.
+- The Yoigo URL was verified and corrected from the parameterized form to the canonical help-page URL.
+
+### Lesson learned
+
+Source presence is not enough: each sentence in a user-visible action must stay within the scope of the linked authority. Unused sources and broad conditional wording are traceability risks even when the underlying advice sounds reasonable.
