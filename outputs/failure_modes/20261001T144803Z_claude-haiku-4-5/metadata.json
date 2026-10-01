@@ -1,0 +1,35 @@
+{
+  "created_utc": "2026-10-01T14:48:03+00:00",
+  "mode": "live",
+  "provider": "anthropic",
+  "model": "claude-haiku-4-5",
+  "max_tokens": 2048,
+  "sampling": "Anthropic SDK defaults",
+  "git_commit": "6e13a06",
+  "dataset": {
+    "file": "evaluations/adversarial_cases.json",
+    "name": "whatnow_adversarial_cases",
+    "version": "0.1",
+    "cases_total": 22,
+    "cases_selected": 1
+  },
+  "expected_provider_calls": 4,
+  "stress_enabled": true,
+  "stress_variants": [
+    {
+      "id": "ADV-020-STRESS-x2",
+      "input_characters": 1406,
+      "approx_input_tokens": 352
+    },
+    {
+      "id": "ADV-020-STRESS-x4",
+      "input_characters": 2518,
+      "approx_input_tokens": 630
+    },
+    {
+      "id": "ADV-020-STRESS-x8",
+      "input_characters": 4742,
+      "approx_input_tokens": 1186
+    }
+  ]
+}

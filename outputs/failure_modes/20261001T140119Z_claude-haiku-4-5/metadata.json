@@ -1,0 +1,19 @@
+{
+  "created_utc": "2026-10-01T14:01:19+00:00",
+  "mode": "live",
+  "provider": "anthropic",
+  "model": "claude-haiku-4-5",
+  "max_tokens": 2048,
+  "sampling": "Anthropic SDK defaults",
+  "git_commit": "6e13a06",
+  "dataset": {
+    "file": "evaluations/adversarial_cases.json",
+    "name": "whatnow_adversarial_cases",
+    "version": "0.1",
+    "cases_total": 22,
+    "cases_selected": 2
+  },
+  "expected_provider_calls": 2,
+  "stress_enabled": false,
+  "stress_variants": []
+}
